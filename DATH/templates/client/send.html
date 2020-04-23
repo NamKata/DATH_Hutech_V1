@@ -1,0 +1,70 @@
+{% extends "client/index.html" %} 
+{% load static %}
+{% block content %}
+<section class="main-content">
+  <div class="container">
+    <div class="messages columns">
+      <div class="column is-narrow left pc">
+        <ul class="nav-user">
+          <li><a class="li01" href="{% url 'info' %"}>Quản lý tài khoản</a></li>
+          <li><a class="li02 is-active" href="{% url 'message' %}">Tin nhắn</a></li>
+          <li>
+            <a class="li03" href="#"
+              >Đổi mật khẩu</a
+            >
+          </li>
+          <!--<li><a class="li04 regiter-team"href="group.html">Đăng ký nhóm dịch</a></li>
+                            <li><a class="li05 collection" href="collection.html">Quyên góp</a></li>-->
+        </ul>
+      </div>
+      <div class="column columns">
+        <div class="user-main column">
+          <form method="post">       
+            <div class="level title user-title">
+              <p class="level-left has-text-weight-bold">Gửi tin nhắn</p>
+            </div>
+            <div class="user-form">
+              <div class="field">
+                <p class="txt">UID</p>
+                <p class="control">
+                  <input
+                    class="input"
+                    type="text"
+                    id="uid"
+                    name="uid"
+                    value=""
+                  />
+                </p>
+              </div>
+              <div class="field">
+                <p class="txt">Tiêu Đề</p>
+                <p class="control">
+                  <input
+                    class="input"
+                    type="text"
+                    id="title"
+                    name="title"
+                    value=""
+                  />
+                </p>
+              </div>
+              <div class="field">
+                <p class="txt">Nội Dung</p>
+                <p class="control">
+                  <textarea class="textarea" name="content"></textarea>
+                </p>
+              </div>
+              <div class="field">
+                <p class="control">
+                  <button class="button is-danger" type="submit">Gửi</button>
+                </p>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

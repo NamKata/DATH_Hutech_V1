@@ -1,0 +1,243 @@
+{% extends "client/index.html" %} {% load static %} {% block content %}
+<section class="schedule">
+  <div class="container">
+    <div class="schedule-inner">
+      <div class="time">
+        Lịch Ra Truyện Ngày Hôm Nay
+      </div>
+      <!-- /.time -->
+      <ul class="schedule-list">
+        <li>
+          <a href="#"
+            ><strong class="hot">[12:00]</strong> Hệ Thống X Toàn Năng - Chương
+            21</a
+          >
+        </li>
+        <li>
+          <a href="#"
+            ><strong class="">[22:00]</strong> The Girl I Like Is A Boy - Chương
+            1</a
+          >
+        </li>
+      </ul>
+      <!-- /.schedule-list -->
+    </div>
+    <!-- /.schedule-inner -->
+  </div>
+</section>
+<!-- /.schedule -->
+<section class="main-content index">
+  <div class="container">
+    <div class="latest">
+      <div class="caption" id="list-update">
+        <a href="#"><span class="starts-icon"></span>Truyện mới cập nhật</a>
+      </div>
+      <ul class="list-stories grid-6">
+        {% for truyen in manga %}
+        <li>
+          <div class="story-item">
+            <a href="{% url 'manga' truyen.id %}">
+              {% if truyen.Image %}
+              <img
+                class="story-cover"
+                src="{{ truyen.Image.url }}"
+                alt="Senpai Có Thích Đàn Em Bb (Big Boobs)"
+              />
+              {% endif %}
+            </a>
+
+            <div class="top-notice">
+              <span class="time-ago">{{truyen.CreateDate|timesince}}</span>
+              <span class="type-label hot">Hot</span>
+            </div>
+            <h3 class="title-book">
+              <a href="#">{{ truyen.MangaName}}</a>
+            </h3>
+            <div class="episode-book">
+              {% for chap in chap %} 
+              {% if chap.Manga.id == truyen.id %}
+              {% if forloop.first %}
+                 <a href="#"> Chương {{chap.SttChap}}</a>
+              {% endif %}
+               
+              {% endif %} {% endfor %}
+            </div>
+            <div class="more-info">
+              <div class="title-more">
+                {{ truyen.MangaName}}
+              </div>
+              <div class="title-more-other">
+                Tên khác: {{ truyen.OrtherName}}
+              </div>
+              <p class="info">Tình trạng: Đang Cập Nhật</p>
+              <p class="info">Lượt xem: 55,789</p>
+              <p class="info">Lượt theo dõi: 750</p>
+              <div class="list-tags">
+                {% for cate in category %} {% if cate.Manga.id == truyen.id %}
+                <a class="blue" href="#">{{cate.Category.CategoryName}}</a>
+                {% endif %} {% endfor %}
+              </div>
+              <div class="excerpt">
+                {% if truyen.Content|length > 150 %}
+                {{truyen.Content|slice:"0:185"}}... {% else %}
+                {{truyen.Content}} {% endif %}
+              </div>
+            </div>
+          </div>
+          <!-- /.story-item -->
+        </li>
+        {% endfor %}
+      </ul>
+      <!-- /.list-stories -->
+      <div class="has-text-centered">
+        <a href="{% url 'more-manga' %}" class="view-more-btn"
+          >Xem thêm nhiều truyện</a
+        >
+      </div>
+    </div>
+    <!-- /.latest -->
+    <div class="female">
+      <div class="caption" id="list-female">
+        <a href="#"><span class="female-icon"></span>Truyện Tranh</a>
+      </div>
+      <div class="tile is-ancestor">
+        <div class="tile is-vertical is-parent">
+          <ul class="list-stories grid-6">
+            {% for truyentranh in truyentranh %}
+            <li>
+              <div class="story-item">
+                <a href="{% url 'manga' truyentranh.id %}">
+                  {% if truyentranh.Image %}
+                  <img
+                    class="story-cover"
+                    src="{{ truyentranh.Image.url }}"
+                    alt="Senpai Có Thích Đàn Em Bb (Big Boobs)"
+                  />
+                  {% endif %}
+                </a>
+
+                <div class="top-notice">
+                  <span class="time-ago"
+                    >{{truyentranh.CreateDate|timesince}}</span
+                  >
+                  <span class="type-label hot">Hot</span>
+                </div>
+                <h3 class="title-book">
+                  <a href="#">{{ truyentranh.MangaName}}</a>
+                </h3>
+                <div class="episode-book">
+                  <a href="#"> Chương 16</a>
+                </div>
+                <div class="more-info">
+                  <div class="title-more">
+                    {{ truyentranh.MangaName}}
+                  </div>
+                  <div class="title-more-other">
+                    Tên khác: {{ truyentranh.OrtherName}}
+                  </div>
+                  <p class="info">Tình trạng: Đang Cập Nhật</p>
+                  <p class="info">Lượt xem: 55,789</p>
+                  <p class="info">Lượt theo dõi: 750</p>
+                  <div class="list-tags">
+                    {% for cate in category %} {% if cate.Manga.id == truyentranh.id %}
+                    <a class="blue" href="#">{{cate.Category.CategoryName}}</a>
+                    {% endif %} {% endfor %}
+                  </div>
+                  <div class="excerpt">
+                    {% if truyentranh.Content|length > 150 %}
+                    {{truyentranh.Content|slice:"0:185"}}... {% else %}
+                    {{truyentranh.Content}} {% endif %}
+                  </div>
+                </div>
+              </div>
+              <!-- /.story-item -->
+            </li>
+            {% endfor %}
+          </ul>
+          <!-- /.list-stories -->
+          <div class="has-text-centered">
+            <a href="{% url 'more-manga' %}" class="view-more-btn"
+              >Xem thêm nhiều truyện</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.female -->
+    <div class="male">
+      <div class="caption" id="list-male">
+        <a href="{% url 'more-manga' %}"
+          ><span class="male-icon"></span>Truyện Chữ</a
+        >
+      </div>
+      <div class="tile is-ancestor">
+        <div class="tile is-vertical is-parent">
+          <ul class="list-stories grid-6">
+            {% for truyentranh in truyenchu %}
+            <li>
+              <div class="story-item">
+                <a href="{% url 'manga' truyentranh.id %}">
+                  {% if truyentranh.Image %}
+                  <img
+                    class="story-cover"
+                    src="{{ truyentranh.Image.url }}"
+                    alt="Senpai Có Thích Đàn Em Bb (Big Boobs)"
+                  />
+                  {% endif %}
+                </a>
+
+                <div class="top-notice">
+                  <span class="time-ago"
+                    >{{truyentranh.CreateDate|timesince}}</span
+                  >
+                  <span class="type-label hot">Hot</span>
+                </div>
+                <h3 class="title-book">
+                  <a href="#">{{ truyentranh.MangaName}}</a>
+                </h3>
+                <div class="episode-book">
+                  <a href="#"> Chương 16</a>
+                </div>
+                <div class="more-info">
+                  <div class="title-more">
+                    {{ truyentranh.MangaName}}
+                  </div>
+                  <div class="title-more-other">
+                    Tên khác: {{ truyentranh.OrtherName}}
+                  </div>
+                  <p class="info">Tình trạng: Đang Cập Nhật</p>
+                  <p class="info">Lượt xem: 55,789</p>
+                  <p class="info">Lượt theo dõi: 750</p>
+                  <div class="list-tags">
+                    {% for cate in category %} {% if cate.Manga.id == truyentranh.id %}
+                    <a class="blue" href="#">{{cate.Category.CategoryName}}</a>
+                    {% endif %} {% endfor %}
+                  </div>
+                  <div class="excerpt">
+                    {% if truyentranh.Content|length > 150 %}
+                    {{truyentranh.Content|slice:"0:185"}}... {% else %}
+                    {{truyentranh.Content}} {% endif %}
+                  </div>
+                </div>
+              </div>
+              <!-- /.story-item -->
+            </li>
+            {% endfor %}
+          </ul>
+          <!-- /.list-stories -->
+          <div class="has-text-centered">
+            <a href="#" class="view-more-btn">Xem thêm nhiều truyện</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.male -->
+  </div>
+  <div id="Top" class="scrollTop none">
+    <span
+      ><a href=""
+        ><img src="{% static 'client/images/back-to-top-icon.png' %}" /></a
+    ></span>
+  </div>
+</section>
+{% endblock %}

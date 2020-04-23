@@ -1,0 +1,626 @@
+{% extends "client/index.html" %} {% load static %} {% block content %}
+<section class="main-content">
+  {% if manga %}
+  <div class="container has-background-white story-detail">
+    <div id="path">
+      <ol class="breadcrumb" itemscope itemtype="#">
+        <li itemprop="itemListElement" itemscope itemtype="#">
+          <a itemprop="item" href="/">
+            <span itemprop="name">Trang Chủ</span>
+          </a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <li itemprop="itemListElement" itemscope itemtype="#">
+          <a itemprop="item" href="{% url 'manga' manga.0.Manga.id %}">
+            <span itemprop="name">{{manga.0.Manga.MangaName}}</span>
+          </a>
+          <meta itemprop="position" content="2" />
+        </li>
+      </ol>
+    </div>
+    <div class="block01">
+      <div class="left">
+        {% if manga.0.Manga.Image %}
+        <img
+          src="{{manga.0.Manga.Image.url}}"
+          alt="Vương Tước Tư Hữu Bảo Bối"
+        />
+        {% endif %}
+      </div>
+      <div class="center">
+        <h1>{{manga.0.Manga.MangaName}}</h1>
+        <div class="txt">
+          <p class="info-item">
+            {% if manga.0.Manga.Author == None%} Tác giả:
+            <a class="org" href="{% url 'more-manga' %}">Đang Cập Nhật</a>
+            {% else %} Tác giả:
+            <a class="org" href="{% url 'more-manga' %}"
+              >{{manga.0.Manga.Author}}</a
+            >
+            {% endif %}
+          </p>
+          <p class="info-item">Tình trạng: Đang Cập Nhật</p>
+          <div>
+            <span>Thống kê:</span>
+            <span class="sp01"
+              ><i class="fas fa-camera"></i>
+              <span class="sp02 number-like">526</span></span
+            >
+            <span class="sp01"
+              ><i class="fas fa-heart"></i>
+              <span class="sp02">2,657</span></span
+            >
+            <span class="sp01"
+              ><i class="fas fa-eye"></i>
+              <span class="sp02">1,037,569</span></span
+            >
+          </div>
+        </div>
+        <ul class="list01">
+          {% for cate in category %} {% if cate.Manga.id == manga.0.Manga.id %}
+          <li class="li03">
+            <a href="#">{{cate.Category.CategoryName}}</a>
+          </li>
+          {% endif %} {% endfor %}
+        </ul>
+
+        <ul class="story-detail-menu">
+          <li class="li01">
+            {% if manga.0.Manga.MangaType.pk == 1 %}
+              
+              {% if manga.1.id == manga.0.id %}
+                 <a
+              href="{% url 'chap' manga.1.id %}"
+              class="button is-danger is-rounded"
+              ><span class="btn-read"></span>Đọc từ đầu</a
+            >
+              {% else %}
+                  <a
+              href="{% url 'chap' manga.0.id %}"
+              class="button is-danger is-rounded"
+              ><span class="btn-read"></span>Đọc từ đầu</a
+            >
+              {% endif %}
+                
+           
+            {% else %}
+            <a
+              href="{% url 'chapchu' manga.1.id %}"
+              class="button is-danger is-rounded"
+              ><span class="btn-read"></span>Đọc từ đầu</a
+            >
+            {% endif %}
+          </li>
+          <li class="li02">
+            <a
+              href="#"
+              class="button is-danger is-rounded btn-subscribe subscribeBook"
+              data-page="index"
+              ><span class="fas fa-heart"></span>Theo dõi</a
+            >
+          </li>
+          <li class="li03">
+            <a href="#" class="button is-danger is-rounded btn-like"
+              ><span class="fas fa-thumbs-up"></span>Thích</a
+            >
+          </li>
+        </ul>
+        <div class="txt txt01 story-detail-info">
+          <p>
+            {{manga.0.Manga.Content}}
+          </p>
+        </div>
+      </div>
+    </div>
+    <ul class="story-detail-menu">
+      <li class="li01">
+        <a href="{% url 'chap' 1 %}" class="button is-danger is-rounded"
+          ><span class="btn-read"></span>Đọc từ đầu</a
+        >
+      </li>
+      <li class="li02">
+        <a
+          href="#"
+          class="button is-danger is-rounded btn-subscribe subscribeBook"
+          data-page="index"
+          data-id="3572"
+          ><span class="fas fa-heart"></span>Theo dõi</a
+        >
+      </li>
+      <li class="li03">
+        <a href="#" class="button is-danger is-rounded btn-like" data-id="3572"
+          ><span class="fas fa-thumbs-up"></span>Thích</a
+        >
+      </li>
+    </ul>
+    <div class="block02">
+      <div class="title">
+        <h2 class="story-detail-title">Danh sách chương</h2>
+      </div>
+      <div class="box">
+        <div class="works-chapter-list">
+          {% for chapter in manga %}
+          <div class="works-chapter-item row">
+            <div class="col-md-10 col-sm-10 col-xs-8">
+              {% if chapter.Manga.MangaType.pk == 1 %}
+              <a target="_blank" href="{% url 'chap' chapter.id %}"
+                >Chương {{chapter.SttChap}}: {{chapter.Title}}
+              </a>
+              {% else %}
+              <a target="_blank" href="{% url 'chapchu' chapter.id %}"
+                >Chương {{chapter.SttChap}}: {{chapter.Title}}
+              </a>
+              {% endif %}
+            </div>
+            <div class="col-md-2 col-sm-2 col-xs-4 text-right">
+              {{chapter.CreateDate|date:'d/m/Y'}}
+              <!-- {{chapter.CreateDate|timesince}} -->
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="block03">
+      <h2 class="story-detail-title">Cùng thể loại</h2>
+      <div class="tile is-ancestor">
+        <div class="tile is-vertical is-parent">
+          <ul class="list-stories grid-6">
+            {% for cungtheloai in cungloai %}
+            <li>
+              <div class="story-item">
+                <a href="{% url 'manga' cungtheloai.Manga.id %}">
+                  {% if cungtheloai.Manga.Image %}
+                  <img
+                    src="{{cungtheloai.Manga.Image.url}}"
+                    alt="{{cungtheloai.Manga.MangaName}}"
+                  />
+                  {% endif %}
+                </a>
+                <div class="top-notice">
+                  <span class="time-ago"
+                    >{{cungtheloai.Manga.CreateDate|timesince}}</span
+                  >
+                  <span class="type-label hot">Hot</span>
+                </div>
+                <h3 class="title-book">
+                  <a href="#">{{cungtheloai.Manga.MangaName}}</a>
+                </h3>
+                <div class="episode-book">
+                  <a href="{% url 'chap' 1 %}"> Chương 14</a>
+                </div>
+                <div class="more-info">
+                  <div class="title-more">
+                    {{cungtheloai.Manga.MangaName}}
+                  </div>
+                  <div class="title-more-other">
+                    Tên khác: {{cungtheloai.Manga.OrtherName}}
+                  </div>
+                  <p class="info">Tình trạng: Đang Cập Nhật</p>
+                  <p class="info">Lượt xem: 129,375</p>
+                  <p class="info">Lượt theo dõi: 1,436</p>
+                  <div class="list-tags">
+                    {% for cate in category %} {% if cate.Manga.id == cungtheloai.Manga.id %}
+                    <a class="blue" href="#">{{cate.Category.CategoryName}}</a>
+                    {% endif %} {% endfor %}
+                  </div>
+                  <div class="excerpt">
+                    {% if cungtheloai.Manga.Content|length > 150 %}
+                    {{cungtheloai.Manga.Content|slice:"0:185"}}... {% else %}
+                    {{cungtheloai.Manga.Content}} {% endif %}
+                  </div>
+                </div>
+              </div>
+              <!-- /.story-item -->
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <!-- /.list-stories -->
+    </div>
+    <div class="comment-container">
+      <span class="story-detail-title"
+        ><i class="fas fa-comments"></i>Bình Luận (<span class="comment-count"
+          >124</span
+        >)</span
+      >
+      <div class="group01 comments-container">
+        <div
+          class="notify"
+          style="padding: 10px; margin-bottom: 10px; background-color: #fff;"
+        >
+          Like
+          <a rel="nofollow" href="#" target="_blank">Fanpage</a>
+          để ủng hộ TruyenQQ và cập nhật các thông tin mới nhất về các bộ truyện
+          nhé.
+          <div
+            class="fb-like"
+            data-href="https://www.facebook.com/kata1112"
+            data-send="false"
+            data-layout="button_count"
+            data-action="like"
+            data-show-faces="true"
+            data-share="false"
+          ></div>
+        </div>
+        <div class="form-comment main_comment">
+          <div class="message-content">
+            <div class="input-comment">
+              <span class="col-md-6 col-sm-6 col-xs-12 text-center"
+                ><input
+                  value=""
+                  class="input"
+                  id="name_comment"
+                  type="text"
+                  placeholder="Họ tên"
+              /></span>
+              <span class="col-md-6 col-sm-6 col-xs-12 text-center"
+                ><input
+                  value=""
+                  class="input"
+                  id="email_comment"
+                  type="email"
+                  placeholder="Email"
+              /></span>
+            </div>
+            <div class="mess-input">
+              <textarea
+                class="textarea"
+                placeholder="Nội dung bình luận"
+                id="content_comment"
+              ></textarea>
+              <button type="submit" class="click_emoji"></button>
+              <button type="submit" class="submit_comment"></button>
+            </div>
+          </div>
+        </div>
+        <div class="list-comment">
+          <article
+            class="info-comment child_493701 parent_0 comment-main-level"
+          >
+            <div class="outsite-comment comment-main-level">
+              <figure class="avartar-comment">
+                <img src="{% static 'client/assets/images/noavatar.png' %}""
+                alt="Truck-kun" />
+              </figure>
+              <div class="item-comment">
+                <div class="outline-content-comment">
+                  <div>
+                    <strong>Truck-kun</strong
+                    ><span class="title-user-comment title-member"
+                      >Thành Viên</span
+                    >
+                    <span class="time">2 Tháng Trước</span>
+                  </div>
+                  <div class="content-comment">
+                    <strong></strong> Máy tuổi L ma dung chuy<br /><img
+                      src="http://mangaqq.com/icon/onion/10.gif?r=r8645456"
+                      class="emoji_comment"
+                    /><img
+                      src="http://mangaqq.com/icon/onion/10.gif?r=r8645456"
+                      class="emoji_comment"
+                    /><img
+                      src="http://mangaqq.com/icon/onion/10.gif?r=r8645456"
+                      class="emoji_comment"
+                    />
+                  </div>
+                </div>
+                <div class="action-comment">
+                  <span class="like-comment" data-id="493701"
+                    ><i class="fas fa-thumbs-up"></i>
+                    <span class="total-like-comment">0</span></span
+                  >
+                  <span
+                    class="reply-comment"
+                    data-parent="0"
+                    data-id="493701"
+                    data-user="118828"
+                    data-replyname="Truck-kun"
+                    ><i class="far fa-comment"></i> Trả lời</span
+                  >
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="load-more load_more_comment">
+        <a class="button is-info">Xem thêm nhiều bình luận</a>
+      </div>
+    </div>
+  </div>
+  v {% else %}
+
+  <div class="container has-background-white story-detail">
+    <div id="path">
+      <ol class="breadcrumb" itemscope itemtype="#">
+        <li itemprop="itemListElement" itemscope itemtype="#">
+          <a itemprop="item" href="/">
+            <span itemprop="name">Trang Chủ</span>
+          </a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <li itemprop="itemListElement" itemscope itemtype="#">
+          <a itemprop="item" href="{% url 'manga' manga_chap.id %}">
+            <span itemprop="name">{{manga_chap.MangaName}}</span>
+          </a>
+          <meta itemprop="position" content="2" />
+        </li>
+      </ol>
+    </div>
+    <div class="block01">
+      <div class="left">
+        {% if manga_chap.Image %}
+        <img src="{{manga_chap.Image.url}}" alt="Vương Tước Tư Hữu Bảo Bối" />
+        {% endif %}
+      </div>
+      <div class="center">
+        <h1>{{manga_chap.MangaName}}</h1>
+        <div class="txt">
+          <p class="info-item">
+            {% if manga_chap.Author == None%} Tác giả:
+            <a class="org" href="{% url 'more-manga' %}">Đang Cập Nhật</a>
+            {% else %} Tác giả:
+            <a class="org" href="{% url 'more-manga' %}"
+              >{{manga_chap.Author}}</a
+            >
+            {% endif %}
+          </p>
+          <p class="info-item">Tình trạng: Đang Cập Nhật</p>
+          <div>
+            <span>Thống kê:</span>
+            <span class="sp01"
+              ><i class="fas fa-camera"></i>
+              <span class="sp02 number-like">526</span></span
+            >
+            <span class="sp01"
+              ><i class="fas fa-heart"></i>
+              <span class="sp02">2,657</span></span
+            >
+            <span class="sp01"
+              ><i class="fas fa-eye"></i>
+              <span class="sp02">1,037,569</span></span
+            >
+          </div>
+        </div>
+        <ul class="list01">
+          {% for cate in category %} {% if cate.Manga.id == manga_chap.id %}
+          <li class="li03">
+            <a href="#">{{cate.Category.CategoryName}}</a>
+          </li>
+          {% endif %} {% endfor %}
+        </ul>
+
+        <ul class="story-detail-menu">
+          <li class="li01">
+            <a href="#" class="button is-danger is-rounded"
+              ><span class="btn-read"></span>Đọc từ đầu</a
+            >
+          </li>
+          <li class="li02">
+            <a
+              href="#"
+              class="button is-danger is-rounded btn-subscribe subscribeBook"
+              data-page="index"
+              ><span class="fas fa-heart"></span>Theo dõi</a
+            >
+          </li>
+          <li class="li03">
+            <a href="#" class="button is-danger is-rounded btn-like"
+              ><span class="fas fa-thumbs-up"></span>Thích</a
+            >
+          </li>
+        </ul>
+        <div class="txt txt01 story-detail-info">
+          <p>
+            {{manga_chap.Content}}
+          </p>
+        </div>
+      </div>
+    </div>
+    <ul class="story-detail-menu">
+      <li class="li01">
+        <a href="{% url 'chap' 1 %}" class="button is-danger is-rounded"
+          ><span class="btn-read"></span>Đọc từ đầu</a
+        >
+      </li>
+      <li class="li02">
+        <a
+          href="#"
+          class="button is-danger is-rounded btn-subscribe subscribeBook"
+          data-page="index"
+          data-id="3572"
+          ><span class="fas fa-heart"></span>Theo dõi</a
+        >
+      </li>
+      <li class="li03">
+        <a href="#" class="button is-danger is-rounded btn-like" data-id="3572"
+          ><span class="fas fa-thumbs-up"></span>Thích</a
+        >
+      </li>
+    </ul>
+    <div class="block02">
+      <div class="title">
+        <h2 class="story-detail-title">Danh sách chương</h2>
+      </div>
+      <div class="box">
+        <div class="works-chapter-list">
+          <div class="works-chapter-item row">
+            <div class="col-md-10 col-sm-10 col-xs-8">Chưa Cập Nhật</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="block03">
+      <h2 class="story-detail-title">Cùng thể loại</h2>
+      <div class="tile is-ancestor">
+        <div class="tile is-vertical is-parent">
+          <ul class="list-stories grid-6">
+            {% for cungtheloai in cungloai %}
+            <li>
+              <div class="story-item">
+                <a href="{% url 'manga' cungtheloai.Manga.id %}">
+                  {% if cungtheloai.Manga.Image %}
+                  <img
+                    src="{{cungtheloai.Manga.Image.url}}"
+                    alt="{{cungtheloai.Manga.MangaName}}"
+                  />
+                  {% endif %}
+                </a>
+                <div class="top-notice">
+                  <span class="time-ago"
+                    >{{cungtheloai.Manga.CreateDate|timesince}}</span
+                  >
+                  <span class="type-label hot">Hot</span>
+                </div>
+                <h3 class="title-book">
+                  <a href="#">{{cungtheloai.Manga.MangaName}}</a>
+                </h3>
+                <div class="episode-book">
+                  <a href="{% url 'chap' 1 %}"> Chương 14</a>
+                </div>
+                <div class="more-info">
+                  <div class="title-more">
+                    {{cungtheloai.Manga.MangaName}}
+                  </div>
+                  <div class="title-more-other">
+                    Tên khác: {{cungtheloai.Manga.OrtherName}}
+                  </div>
+                  <p class="info">Tình trạng: Đang Cập Nhật</p>
+                  <p class="info">Lượt xem: 129,375</p>
+                  <p class="info">Lượt theo dõi: 1,436</p>
+                  <div class="list-tags">
+                    {% for cate in category %} {% if cate.Manga.id == cungtheloai.Manga.id %}
+                    <a class="blue" href="#">{{cate.Category.CategoryName}}</a>
+                    {% endif %} {% endfor %}
+                  </div>
+                  <div class="excerpt">
+                    {% if cungtheloai.Manga.Content|length > 150 %}
+                    {{cungtheloai.Manga.Content|slice:"0:185"}}... {% else %}
+                    {{cungtheloai.Manga.Content}} {% endif %}
+                  </div>
+                </div>
+              </div>
+              <!-- /.story-item -->
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <!-- /.list-stories -->
+    </div>
+    <div class="comment-container">
+      <span class="story-detail-title"
+        ><i class="fas fa-comments"></i>Bình Luận (<span class="comment-count"
+          >124</span
+        >)</span
+      >
+      <div class="group01 comments-container">
+        <div
+          class="notify"
+          style="padding: 10px; margin-bottom: 10px; background-color: #fff;"
+        >
+          Like
+          <a rel="nofollow" href="#" target="_blank">Fanpage</a>
+          để ủng hộ TruyenQQ và cập nhật các thông tin mới nhất về các bộ truyện
+          nhé.
+          <div
+            class="fb-like"
+            data-href="https://www.facebook.com/kata1112"
+            data-send="false"
+            data-layout="button_count"
+            data-action="like"
+            data-show-faces="true"
+            data-share="false"
+          ></div>
+        </div>
+        <div class="form-comment main_comment">
+          <div class="message-content">
+            <div class="input-comment">
+              <span class="col-md-6 col-sm-6 col-xs-12 text-center"
+                ><input
+                  value=""
+                  class="input"
+                  id="name_comment"
+                  type="text"
+                  placeholder="Họ tên"
+              /></span>
+              <span class="col-md-6 col-sm-6 col-xs-12 text-center"
+                ><input
+                  value=""
+                  class="input"
+                  id="email_comment"
+                  type="email"
+                  placeholder="Email"
+              /></span>
+            </div>
+            <div class="mess-input">
+              <textarea
+                class="textarea"
+                placeholder="Nội dung bình luận"
+                id="content_comment"
+              ></textarea>
+              <button type="submit" class="click_emoji"></button>
+              <button type="submit" class="submit_comment"></button>
+            </div>
+          </div>
+        </div>
+        <div class="list-comment">
+          <article
+            class="info-comment child_493701 parent_0 comment-main-level"
+          >
+            <div class="outsite-comment comment-main-level">
+              <figure class="avartar-comment">
+                <img src="{% static 'client/assets/images/noavatar.png' %}""
+                alt="Truck-kun" />
+              </figure>
+              <div class="item-comment">
+                <div class="outline-content-comment">
+                  <div>
+                    <strong>Truck-kun</strong
+                    ><span class="title-user-comment title-member"
+                      >Thành Viên</span
+                    >
+                    <span class="time">2 Tháng Trước</span>
+                  </div>
+                  <div class="content-comment">
+                    <strong></strong> Máy tuổi L ma dung chuy<br /><img
+                      src="http://mangaqq.com/icon/onion/10.gif?r=r8645456"
+                      class="emoji_comment"
+                    /><img
+                      src="http://mangaqq.com/icon/onion/10.gif?r=r8645456"
+                      class="emoji_comment"
+                    /><img
+                      src="http://mangaqq.com/icon/onion/10.gif?r=r8645456"
+                      class="emoji_comment"
+                    />
+                  </div>
+                </div>
+                <div class="action-comment">
+                  <span class="like-comment" data-id="493701"
+                    ><i class="fas fa-thumbs-up"></i>
+                    <span class="total-like-comment">0</span></span
+                  >
+                  <span
+                    class="reply-comment"
+                    data-parent="0"
+                    data-id="493701"
+                    data-user="118828"
+                    data-replyname="Truck-kun"
+                    ><i class="far fa-comment"></i> Trả lời</span
+                  >
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="load-more load_more_comment">
+        <a class="button is-info">Xem thêm nhiều bình luận</a>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}
