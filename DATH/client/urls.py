@@ -12,6 +12,9 @@ urlpatterns = [
     path('chapchu/<int:id>/', views.chap_chu, name='chapchu'),
     path('message/', views.message, name='message'),
     path('send/', views.send_messgae, name='send'),
+    path('danh-sach-truyen-moi-cap-nhap/', views.truyenmoicapnhap, name='list-cap-nhap'),
+    path('danh-sach-truyen-tranh/', views.truyentranh, name='list-tranh'),
+    path('danh-sach-truyen-chu/', views.truyenchu, name='list-chu'),
 ]
 
 if settings.DEBUG:

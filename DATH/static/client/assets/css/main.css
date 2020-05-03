@@ -21726,22 +21726,23 @@ textarea {
  position:absolute
 }
 .group-icon {
- background:url(../images/group.png) no-repeat center;
+ background:url(../images/unnamed.png) no-repeat center;
  width:36px;
- height:36px
+ height:36px;
+ background-size: 50px;
 }
 .starts-icon {
- background:url(../images/starts-icon.png) no-repeat center;
+ background:url(../images/cap-nhap.png) no-repeat center;
  width:36px;
  height:36px
 }
 .female-icon {
- background:url(../images/female-icon.png) no-repeat center;
+ background:url(../images/truyen-tranh.png) no-repeat center;
  width:36px;
  height:36px
 }
 .male-icon {
- background:url(../images/male-icon.png) no-repeat center;
+ background:url(../images/truyen-chu.png) no-repeat center;
  width:32px;
  height:32px
 }
@@ -21840,10 +21841,12 @@ textarea {
  text-indent:-9999px
 }
 .top-bar .logo a {
- background:url(../images/logo.png) no-repeat;
+ background:url(../images/unnamed.png) no-repeat;
  width:146px;
- height:34px;
- display:block
+ height:54px;
+ display:block;
+ background-repeat: no-repeat;
+ background-size: cover;
 }
 
 
@@ -22687,6 +22690,26 @@ textarea {
  color:#000
 }
 .main-content .view-more-btn {
+ border-radius:5px;
+ box-shadow:0 0 3px 0 rgba(0,0,0,.25);
+ background-color:#56ccf2;;
+ font-size:16px;
+ font-weight:700;
+ color:#fff!important;
+ padding:12px 20px;
+ display:inline-block
+}
+.main-content .view-more-btn-tranh {
+ border-radius:5px;
+ box-shadow:0 0 3px 0 rgba(0,0,0,.25);
+ background-color:#ff2853;
+ font-size:16px;
+ font-weight:700;
+ color:#fff!important;
+ padding:12px 20px;
+ display:inline-block
+}
+.main-content .view-more-btn-chu {
  border-radius:5px;
  box-shadow:0 0 3px 0 rgba(0,0,0,.25);
  background-color:#f18121;
