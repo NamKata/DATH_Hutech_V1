@@ -1,0 +1,17 @@
+{% for c in data %}
+<tr>
+  <td class="center">
+    <label class="pos-rel">
+      <input type="checkbox" class="ace" />
+      <span class="lbl"></span>
+    </label>
+  </td>
+  <td>
+    <a href="#">{{c.Name}}</a>
+  </td>
+  <td>{{c.Content}}</td>
+  <td>
+   {% include "master/href/body.html" %}
+  </td>
+</tr>
+{% endfor %}

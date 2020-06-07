@@ -40,24 +40,60 @@
           {% for manga in manga %}
           <li>
             <div class="story-item">
-              <a href="{% url 'manga' manga.id %}">
-                {% if manga.Image %}
-                <img
-                  class="story-cover"
-                  src="{{manga.Image.url}}"
-                  alt="{{manga.MangaName}}"
-                />
+             {% if manga.MangaType.pk == 1 %}
+                  <a href="{% url 'truyen-tranh' manga.Slug %}">
+                    {% if manga.Image %}
+                    <img
+                      class="story-cover"
+                      src="{{ manga.Image.url }}"
+                      alt="{{manga.MangaName}}"
+                    />
+                    {% endif %}
+                  </a>
+                {% else %}
+                    <a href="{% url 'truyen-chu' manga.Slug %}">
+                    {% if manga.Image %}
+                    <img
+                      class="story-cover"
+                      src="{{ manga.Image.url }}"
+                      alt="{{manga.MangaName}}"
+                      />
+                    {% endif %}
+                    </a>
                 {% endif %}
-              </a>
               <div class="top-notice">
-                <span class="time-ago">{{manga.CreateDate|timesince}}</span>
+                {% if manga.Chapnow == 0 %}
+                  <span class="time-ago">Đang cập nhập</span>
+                  {% else %}
+                  <span class="time-ago"
+                    >{{manga.DateUpChap|timesince}}</span
+                  >
+                  {% endif %}
                 <span class="type-label hot">Hot</span>
               </div>
               <h3 class="title-book">
-                <a href="{% url 'manga' manga.id %}">{{manga.MangaName}}</a>
+                  {% if manga.MangaType.pk == 1 %}
+                  <a href="{% url 'truyen-tranh' manga.Slug %}">{{ manga.MangaName}}</a>
+                {% else %}
+                  <a href="{% url 'truyen-chu' manga.Slug %}">{{ manga.MangaName}}</a>
+                {% endif %}
               </h3>
               <div class="episode-book">
-                <a href="#"> Chương 16</a>
+                {% if manga.Chapnow == 0 %}
+                  <a href="#"> Đang Cập Nhập </a>
+                  {% else %} {% if manga.MangaType.pk == 1 %}
+                  <a
+                    href="{% url 'truyen-tranh-chap' manga.Slug manga.Chapnow %}"
+                  >
+                    Chương {{manga.Chapnow}}
+                  </a>
+                  {% else %}
+                  <a
+                    href="{% url 'truyen-chu-chap' manga.Slug manga.Chapnow %}"
+                  >
+                    Chương {{manga.Chapnow}}
+                  </a>
+                  {% endif %} {% endif %}
               </div>
               <div class="more-info">
                 <div class="title-more">
@@ -76,8 +112,8 @@
                 </div>
                 <div class="excerpt">
                   {% if manga.Content|length > 150 %}
-                  {{manga.Content|slice:"0:185"}}... {% else %}
-                  {{manga.Content}} {% endif %}
+                  {{manga.Content|slice:"0:185"|safe|linebreaks}}... {% else %}
+                  {{manga.Content|linebreaks|safe}} {% endif %}
                 </div>
               </div>
             </div>

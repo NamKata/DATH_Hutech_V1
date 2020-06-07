@@ -14,7 +14,7 @@
               </li>
               <li itemprop="itemListElement" itemscope itemtype="#">
                 <a itemprop="item" href="#">
-                   <span itemprop="name">{{chap.Manga.MangaName}}</span>
+                  <span itemprop="name">{{chap.Manga.MangaName}}</span>
                 </a>
                 <meta itemprop="position" content="2" />
               </li>
@@ -27,11 +27,13 @@
             </ol>
           </div>
           <h1 class="detail-title">
-           <a href="{% url 'manga' chap.Manga.id %}">{{chap.Manga.MangaName}}</a>
+            <a href="{% url 'manga' chap.Manga.id %}"
+              >{{chap.Manga.MangaName}}</a
+            >
             Chap {{chap.SttChap}}: {{chap.Title}}
           </h1>
         </div>
-        <div class="story-see-content">        
+        <div class="story-see-content">
           {{chap.Content|safe}}
           <br />
         </div>
@@ -67,7 +69,7 @@
               </li>
             </ol>
           </div>
-        
+
           <div class="comment-container">
             <span class="story-detail-title"
               ><i class="fas fa-comments"></i>Bình Luận (<span
@@ -247,9 +249,16 @@
       </div>
       <div class="center level">
         <div class="prev level-left">
-          <a
+          <!-- <a
             class="link-prev-chap"
             href="{% url 'chap' chap.id %}"
+            title="{{chap.Manga.MangaName}}"
+            ><i class="fas fa-arrow-circle-left"></i
+          ></a> -->
+          <a
+            class="link-prev-chap"
+            href="/master/"
+            id="prev_link_chap"
             title="{{chap.Manga.MangaName}}"
             ><i class="fas fa-arrow-circle-left"></i
           ></a>
@@ -270,13 +279,16 @@
           {% endif %} {% endfor %}
         </select>
         <div class="next level-right">
-          <a class="link-next-chap" href="{% url 'chap' chap.id %}"
+          <a
+            class="link-next-chap"
+            id="next_link_chap"
+            href="{% url 'chap' chap.id %}"
             ><i class="fas fa-arrow-circle-right"></i
           ></a>
         </div>
       </div>
       <div class="level-right">
-         <ul class="list-01">
+        <ul class="list-01">
           <li>
             <a class="" href="/"
               ><i class="fas fa-home"></i>
@@ -294,4 +306,27 @@
     </div>
   </div>
 </section>
-{% endblock content %}
+{% endblock %} {% block js %}
+<!-- <script type="text/javascript">
+var prevchap=document.getElementById('prev_link_chap');
+prevchap.addEventListener('keyup',function(event){
+  if (event.keyCode === 37) {
+   event.preventDefault();
+   document.getElementById("prev_link_chap").click();
+  }
+});
+</script> -->
+<script type="text/javascript">
+       $(document).on('keydown', function (event) {
+      if (event.which == 37) {
+          $('#prev_link_chap').trigger('click');
+          //or
+          window.location = $('#prev_link_chap').attr('href');
+      } else if (event.which == 39) {
+          $('#next_link_chap').trigger('click');
+          //or
+          window.location = $('#next_link_chap').attr('href');
+      }
+  })
+</script>
+{% endblock %}

@@ -26,7 +26,7 @@ SECRET_KEY = 'k^%atvvic&+wu(bv!#xxd1hs^&y&vhbhwk527ay%o^(c6ax0ni'
 DEBUG = True
 
 # ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-ALLOWED_HOSTS=[]
+ALLOWED_HOSTS=['www.localhost', 'localhost', '127.0.0.1']
 
 # Application definition
 
@@ -40,6 +40,15 @@ INSTALLED_APPS = [
     'DB',
     'client',
     'master',
+    'widget_tweaks',
+    'ckeditor',
+    'ckeditor_uploader',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
 ]
 
 MIDDLEWARE = [
@@ -79,7 +88,7 @@ WSGI_APPLICATION = 'DATH.wsgi.application'
 DATABASES = {
      'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'DATH_DB_Comic',
+        'NAME': 'DB_DATH',
         'USER': 'postgres',
         'PASSWORD': '981211',
         'HOST': '127.0.0.1',
@@ -139,6 +148,89 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
+# EMAIL_USE_SSL = False
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'tiennam111298@gmail.com'
-EMAIL_HOST_PASSWORD = 'nAmpro09a'
+EMAIL_HOST_USER = 'tiennam981211@gmail.com'
+EMAIL_HOST_PASSWORD = '01645616920'
+
+
+# CKEDITOR_JQUERY_URL = '/static/master/assets/cke/jquery.min.js'
+# CKEDITOR_BASEPATH = STATIC_ROOT+"/ckeditor/ckeditor"
+# CKEDITOR_IMAGE_BACKEND = "pillow"
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_IMAGE_BACKEND = "pillow"
+CKEDITOR_UPLOAD_SLUGIFY_FILENAME = False
+# CKEDITOR_FILENAME_GENERATOR = 'utils.get_filename'
+# # CKEDITOR_CONFIGS = {
+# #     'default': {
+# #         'skin': 'moono',
+# #         # 'skin': 'office2013',
+# #         'toolbar_Basic': [
+# #             ['Source', '-', 'Bold', 'Italic']
+# #         ],
+# #         'toolbar_YourCustomToolbarConfig': [
+# #             {'name': 'document', 'items': ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
+# #             {'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
+# #             {'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
+# #             {'name': 'forms',
+# #              'items': ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton',
+# #                        'HiddenField']},
+# #             '/',
+# #             {'name': 'basicstyles',
+# #              'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
+# #             {'name': 'paragraph',
+# #              'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-',
+# #                        'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl',
+# #                        'Language']},
+# #             {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
+# #             {'name': 'insert',
+# #              'items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
+# #             '/',
+# #             {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
+# #             {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+# #             {'name': 'tools', 'items': ['Maximize', 'ShowBlocks']},
+# #             {'name': 'about', 'items': ['About']},
+# #             '/',  # put this to force next toolbar on new line
+# #             {'name': 'yourcustomtools', 'items': [
+# #                 # put the name of your editor.ui.addButton here
+# #                 'Preview',
+# #                 'Maximize',
+
+# #             ]},
+# #         ],
+# #         'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here
+# #         # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
+# #         # 'height': 291,
+# #         # 'width': '100%',
+# #         # 'filebrowserWindowHeight': 725,
+# #         # 'filebrowserWindowWidth': 940,
+# #         # 'toolbarCanCollapse': True,
+# #         # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
+# #         'tabSpaces': 4,
+# #         'extraPlugins': ','.join([
+# #             'uploadimage', # the upload image feature
+# #             # your extra plugins here
+# #             'div',
+# #             'autolink',
+# #             'autoembed',
+# #             'embedsemantic',
+# #             'autogrow',
+# #             # 'devtools',
+# #             'widget',
+# #             'lineutils',
+# #             'clipboard',
+# #             'dialog',
+# #             'dialogui',
+# #             'elementspath'
+# #         ]),
+# #     }
+# # }
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': 570,
+    },
+}
+SITE_ID=1
+LOGIN_REDIRECT_URL = "/"

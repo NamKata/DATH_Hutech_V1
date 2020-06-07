@@ -31,6 +31,9 @@
         <h1>{{manga.0.Manga.MangaName}}</h1>
         <div class="txt">
           <p class="info-item">
+          Tên Khác : <a href="{% url 'manga' manga.0.Manga.id %}">{{manga.0.Manga.OrtherName}}</a>
+          </p>
+          <p class="info-item">
             {% if manga.0.Manga.Author == None%} Tác giả:
             <a class="org" href="{% url 'more-manga' %}">Đang Cập Nhật</a>
             {% else %} Tác giả:

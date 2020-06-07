@@ -1,0 +1,398 @@
+{% extends "client/index.html" %} {% load static %} {% block content %}
+<section class="main-content">
+  <div class="container" id="pageregman">
+    <div class="messages">
+    <div class="col-lg-12" style="font-family: Arial, Helvetica, sans-serif; font-size: 18px;">
+      <div class="field">
+        <h2 style="color: red; margin-bottom: 10px; text-align: center;">Thêm Chương : {{truyen.MangaName}}</h2>
+      </div>
+    </div>
+     <form method="post" enctype="multipart/form-data" id="DangKyChuong">
+            {% csrf_token %}
+            <div class="col-lg-12">
+              <div class="field">
+                <p class="txt">Số thứ tự chượng :</p>
+                <p class="control">
+                  <input
+                    class="input"
+                    name="SttChap"
+                    id="SttChap"
+                    value="{{sttchap}}"
+                    type="number"
+                    placeholder="1"
+                  />
+                </p>
+              </div>
+              <div class="field">
+                <p class="txt">Tiêu đề:</p>
+                <p class="control">
+                  <input
+                    class="input"
+                    type="text"
+                    id="Title"
+                    name="Title"
+                    placeholder="Tiêu đề truyện"
+                  />
+                </p>
+              </div>
+              <div class="field">
+                <p class="txt">Ngày đăng chương:</p>
+                <p class="control">
+                  <input
+                    class="input"
+                    id="DateUp"
+                    name="DateUp"
+                    type="date"
+                    placeholder="22/2/2022"
+                  />
+                </p>
+              </div>
+            <div class="row" style="margin: 10px 10px 10px 10px; height: 800px;">
+              <div class="field">
+                <p class="txt">Nội dung:</p>
+                <p class="control" >
+                  <textarea name="Content" id="Content" ></textarea>
+                </p>
+              </div>
+            </div>
+            <div style="text-align: center;">
+              <button class="button is-danger" type="submit">Đăng Ký</button>
+            </div>
+          </form>
+    </div>
+     
+    <!-- <div class="main_container">
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="work">
+        
+        </div>
+        <div role="tabpanel" class="tab-pane" id="hire">
+          <form method="post" enctype="multipart/form-data" id="Dangkytruyen">
+            {% csrf_token %}
+            <div class="col-lg-2">
+              <img
+                id="ImageManga"
+                class="image-avatar"
+                src="{% static 'client/assets/images/noavatar.png' %}"
+                width="150px"
+                height="150px"
+              />
+              <input
+                type="file"
+                multiple="false"
+                name="Image"
+                id="uploadavatar"
+                style="display: none;"
+                onchange="img_pathUrl(this)"
+              />
+              <button
+                class="button is-danger btn-avatar"
+                type="button"
+                style="margin-left: 25px;"
+                id="clickFile"
+              >
+                Chọn Hình
+              </button>
+            </div>
+            <div class="col-lg-10">
+              <div class="field">
+                <p class="txt">Tên Truyện :</p>
+                <p class="control">
+                  <input
+                    class="input"
+                    name="MangaName"
+                    id="MangaName"
+                    type="text"
+                    placeholder="Đảo Hải Tặc"
+                  />
+                </p>
+              </div>
+              <div class="field">
+                <p class="txt">Đường dẫn</p>
+                <p class="control">
+                  <input
+                    class="input"
+                    type="text"
+                    id="Slug"
+                    name="Slug"
+                    placeholder="dao-hai-tac"
+                  />
+                </p>
+              </div>
+              <div class="field">
+                <p class="txt">Tên Khác:</p>
+                <p class="control">
+                  <input
+                    class="input"
+                    id="OrtherName"
+                    name="OrtherName"
+                    type="text"
+                    placeholder="Onepice, Đảo Kho Báu, Vua Cướp Biển"
+                  />
+                </p>
+              </div>
+              <div class="field">
+                <p class="txt">Tác Giả :</p>
+                <p class="control">
+                  <input
+                    class="input"
+                    type="text"
+                    id="Author"
+                    name="Author"
+                    placeholder="Oda "
+                  />
+                </p>
+              </div>
+              <div class="field">
+                <p class="txt">Thể loại :</p>
+                <p class="control">
+                  <label for="select-state">States:</label>
+                  <select
+                    id="select-state"
+                    multiple
+                    name="state[]"
+                    class="demo-default"
+                    style="width: 50%;"
+                  >
+                    <option value="">Select a state...</option>
+                    <option value="AL">Alabama</option>
+                    <option value="AK">Alaska</option>
+                    <option value="AZ">Arizona</option>
+                    <option value="AR">Arkansas</option>
+                    <option value="CA">California</option>
+                    <option value="CO">Colorado</option>
+                    <option value="CT">Connecticut</option>
+                    <option value="DE">Delaware</option>
+                    <option value="DC">District of Columbia</option>
+                    <option value="FL">Florida</option>
+                    <option value="GA">Georgia</option>
+                    <option value="HI">Hawaii</option>
+                    <option value="ID">Idaho</option>
+                    <option value="IL">Illinois</option>
+                    <option value="IN">Indiana</option>
+                    <option value="IA">Iowa</option>
+                    <option value="KS">Kansas</option>
+                    <option value="KY">Kentucky</option>
+                    <option value="LA">Louisiana</option>
+                    <option value="ME">Maine</option>
+                    <option value="MD">Maryland</option>
+                    <option value="MA">Massachusetts</option>
+                    <option value="MI">Michigan</option>
+                    <option value="MN">Minnesota</option>
+                    <option value="MS">Mississippi</option>
+                    <option value="MO">Missouri</option>
+                    <option value="MT">Montana</option>
+                    <option value="NE">Nebraska</option>
+                    <option value="NV">Nevada</option>
+                    <option value="NH">New Hampshire</option>
+                    <option value="NJ">New Jersey</option>
+                    <option value="NM">New Mexico</option>
+                    <option value="NY">New York</option>
+                    <option value="NC">North Carolina</option>
+                    <option value="ND">North Dakota</option>
+                    <option value="OH">Ohio</option>
+                    <option value="OK">Oklahoma</option>
+                    <option value="OR">Oregon</option>
+                    <option value="PA">Pennsylvania</option>
+                    <option value="RI">Rhode Island</option>
+                    <option value="SC">South Carolina</option>
+                    <option value="SD">South Dakota</option>
+                    <option value="TN">Tennessee</option>
+                    <option value="TX">Texas</option>
+                    <option value="UT">Utah</option>
+                    <option value="VT">Vermont</option>
+                    <option value="VA">Virginia</option>
+                    <option value="WA">Washington</option>
+                    <option value="WV">West Virginia</option>
+                    <option value="WI">Wisconsin</option>
+                    <option value="WY" selected>Wyoming</option>
+                  </select>
+                </p>
+              </div>
+              <div class="field">
+                <p class="txt">Người Dịch :</p>
+                <p class="control">
+                  <input
+                    class="input"
+                    type="text"
+                    id="Editor"
+                    name="Editor"
+                    placeholder="49"
+                  />
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="field">
+                <p class="txt">Nội dung:</p>
+                <p class="control">
+                  <textarea name="Content" id="Content"></textarea>
+                </p>
+              </div>
+            </div>
+            <div style="text-align: center;">
+              <button class="button is-danger" type="submit">Đăng Ký</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div> -->
+  </div>
+</section>
+{% endblock %} {% block js %}
+ <script type="text/javascript">
+      tinymce.init({
+        selector: "textarea",
+        plugins: "emoticons hr image link lists charmap table",
+        toolbar: "formatgroup paragraphgroup insertgroup",
+        toolbar_groups: {
+          formatgroup: {
+            icon: "format",
+            tooltip: "Formatting",
+            items:
+              "bold italic underline strikethrough | forecolor backcolor | superscript subscript | removeformat",
+          },
+          paragraphgroup: {
+            icon: "paragraph",
+            tooltip: "Paragraph format",
+            items:
+              "h1 h2 h3 | bullist numlist | alignleft aligncenter alignright | indent outdent",
+          },
+          insertgroup: {
+            icon: "plus",
+            tooltip: "Insert",
+            items: "link image emoticons charmap hr",
+          },
+        },
+        skin: "outside",
+        toolbar_location: "bottom",
+        menubar: false,
+        height: 350,
+        with: 500,
+        file_picker_types: "image",
+        file_picker_callback: function (cb, value, meta) {
+          var input = document.createElement("input");
+          input.setAttribute("type", "file");
+          input.setAttribute("accept", "image/*");
+
+          input.onchange = function () {
+            var file = this.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function () {
+              var id = "blobid" + new Date().getTime();
+              var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+              var base64 = reader.result.split(",")[1];
+              var blobInfo = blobCache.create(id, file, base64);
+              blobCache.add(blobInfo);
+
+              // call the callback and populate the Title field with the file name
+              cb(blobInfo.blobUri(), { title: file.name });
+            };
+            reader.readAsDataURL(file);
+          };
+          input.click();
+        },
+      });
+    </script>
+<script type="text/javascript">
+  $("#clickFile").click(function () {
+    $("#uploadavatar").click();
+  });
+  $("#MangaName").keyup(function () {
+    var str = $(this).val();
+    var trims = $.trim(str);
+    // trims.replace(/[^a-z0-9]/gi, '-').replace(/-+/g, '-').replace(/^-|-$/g, '-');
+    var slug = trims
+      .replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi, "a")
+      .replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi, "e")
+      .replace(/i|í|ì|ỉ|ĩ|ị/gi, "i")
+      .replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/gi, "o")
+      .replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, "u")
+      .replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, "y")
+      .replace(/đ/gi, "d")
+      .replace(
+        /\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|_/gi,
+        ""
+      )
+      .replace(/ /gi, "-")
+      .replace(/\-\-\-\-\-/gi, "")
+      .replace(/\-\-\-\-/gi, "-")
+      .replace(/\-\-\-/gi, "-")
+      .replace(/\-\-/gi, "-")
+      .replace(/\@\-|\-\@|\@/gi, "");
+    // $('#slug').val(slug.toLowerCase()+".html")
+    $("#Slug").val(slug.toLowerCase());
+  });
+  // $("#pageregman").on("submit","#Dangkytruyen",function(){
+  //   var form = $(this);
+  //   var MangaName = $("#MangaName").val();
+  //   var OrtherName = $("#OrtherName").val();
+  //   var Slug = $("#Slug").val();
+  //   var Author = $("#Author").val();
+  //   var Editor = $("#Editor").val();
+  //   var StartDate = $("#StartDate").val();
+  //   var Content = $("textarea#Content").val();
+  //   var Image = $("#uploadavatar").val();
+  //   $.ajax({
+  //     // headers: {
+  //     //   "Content-Type": "application/json",
+  //     //   "X-CSRFToken": getCookie("csrftoken"),
+  //     // },
+  //     url: form.attr("action"),
+  //     dataType: "json",
+  //     data: {
+  //       MangaName: MangaName,
+  //       OrtherName: OrtherName,
+  //       Slug: Slug,
+  //       Author: Author,
+  //       Editor: Editor,
+  //       StartDate: StartDate,
+  //       Content: Content,
+  //       Image: Image,
+  //     },
+  //     method: form.attr("method"),
+  //     success: function (data) {
+  //       if (data.Success) {
+  //         alert("Thanh cong.................");
+  //         window.location.href = "/";
+  //       } else {
+  //         alert("That bai.................");
+  //       }
+  //     },
+  //   });
+  // });
+
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != "") {
+      var cookies = document.cookie.split(";");
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = jQuery.trim(cookies[i]);
+        if (cookie.substring(0, name.length + 1) == name + "=") {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+</script>
+<script>
+  function img_pathUrl(input) {
+    // $('#ImageManga')[0].src = (window.URL ? URL : webkitURL).createObjectURL(input.files[0]);
+    $("#ImageManga")[0].src = URL.createObjectURL(event.target.files[0]);
+  }
+  $("#MangaType").click(function(){
+    if($("#MangaType1").attr('checked',true)){
+     $("#MangaType1").removeAttr('checked');
+    }
+  });
+  $("#MangaType1").click(function(){
+    if($("#MangaType").attr('checked',true)){
+     $("#MangaType").removeAttr('checked');
+    }
+  });
+</script>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% for c in data %}
+<tr>
+  <td class="center">
+    <label class="pos-rel">
+      <input type="checkbox" class="ace" />
+      <span class="lbl"></span>
+    </label>
+  </td>
+  <td>
+    <a href="#">{{c.CategoryName}}</a>
+  </td>
+  <td>{{c.CategorySlug}}</td>
+  <td>{{c.CategoryContent}}</td>
+  <td>
+        {% include 'master/href/bodycate.html' %}
+  </td>
+</tr>
+{% endfor %}

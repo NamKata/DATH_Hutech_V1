@@ -1,0 +1,16 @@
+<form method="post" action="{% url 'deletegroup' group.id %}" class="js-group-delete-form">
+  {% csrf_token %}
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">Xóa Nhóm Sử Dụng Đang Chọn</h4>
+  </div>
+  <div class="modal-body">
+    <p class="lead">Bạn đã chắc là xóa nhóm này chứ ? Nhóm là :<strong>{{ group.Name }}</strong>?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Thoát</button>
+    <button type="submit" class="btn btn-danger">Xác Nhận</button>
+  </div>
+</form>

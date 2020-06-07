@@ -1,0 +1,283 @@
+{% extends "client/index.html" %} {% load static %} {% block content %}
+<section class="main-content">
+  <div class="container has-background-white story-detail">
+    <div id="path">
+      <ol class="breadcrumb" itemscope itemtype="#">
+        <li itemprop="itemListElement" itemscope itemtype="#">
+          <a itemprop="item" href="/">
+            <span itemprop="name">Trang Chủ</span>
+          </a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <li itemprop="itemListElement" itemscope itemtype="#">
+          <a itemprop="item" href="{% url 'truyen-chu' manga.Slug %}">
+            <span itemprop="name">{{manga.MangaName}}</span>
+          </a>
+          <meta itemprop="position" content="2" />
+        </li>
+      </ol>
+    </div>
+    <div class="block01">
+      <div class="left">
+        {% if manga.Image %}
+        <img
+          src="{{manga.Image.url}}"
+          alt="Vương Tước Tư Hữu Bảo Bối"
+        />
+        {% endif %}
+      </div>
+      <div class="center">
+        <h1>{{manga.MangaName}}</h1>
+        <div class="txt">
+          <p class="info-item">
+          Tên Khác : <a href="{% url 'truyen-chu' manga.Slug %}">{{manga.OrtherName}}</a>
+          </p>
+          <p class="info-item">
+            {% if manga.Author == None%} Tác giả:
+            <a class="org" href="#">Đang Cập Nhật</a>
+            {% else %} Tác giả:
+            <a class="org" href="#"
+              >{{manga.Author}}</a
+            >
+            {% endif %}
+          </p>
+          <p class="info-item">Tình trạng: Đang Cập Nhật</p>
+          <div>
+            <span>Thống kê:</span>
+            <span class="sp01"
+              ><i class="fas fa-camera"></i>
+              <span class="sp02 number-like">526</span></span
+            >
+            <span class="sp01"
+              ><i class="fas fa-heart"></i>
+              <span class="sp02">2,657</span></span
+            >
+            <span class="sp01"
+              ><i class="fas fa-eye"></i>
+              <span class="sp02">1,037,569</span></span
+            >
+          </div>
+        </div>
+        <ul class="list01">
+          {% for cate in category %} {% if cate.Manga.id == manga.id %}
+          <li class="li03">
+            <a href="#">{{cate.Category.CategoryName}}</a>
+          </li>
+          {% endif %} {% endfor %}
+        </ul>
+
+        <ul class="story-detail-menu">
+        {% if chapfirst %}
+          <li class="li01">
+            <a
+              target="_blank"
+              href="{% url 'truyen-chu-chap' manga.Slug  chapfirst.id %}"
+              class="button is-danger is-rounded"
+              ><span class="btn-read"></span>Đọc từ đầu</a
+            >
+          </li>
+        {% else %}
+           <li class="li01">
+            <a
+              href="#"
+              class="button is-danger is-rounded"
+              ><span class="btn-read"></span>Đọc từ đầu</a
+            >
+          </li>
+        {% endif %}
+          
+          <li class="li02">
+              {% if follow %}
+                {% if follow.StatusFollow == True %}
+                  <a
+                  id="theodoi"
+                  data-url="{% url 'theodoi' manga.pk %}"
+                  class="button is-danger is-rounded btn-subscribe subscribeBook"
+                
+                  ><span class="far fa-heart"></span> Hủy Theo dõi</a
+                >
+                {% else %}
+                <a
+                  id="theodoi"
+                  data-url="{% url 'theodoi' manga.pk %}"
+                  class="button is-danger is-rounded btn-subscribe subscribeBook"
+                
+                  ><span class="fas fa-heart"></span>Theo dõi</a
+                >
+                {% endif %}
+              {% else %}
+                <a
+                  id="theodoi"
+                  data-url="{% url 'theodoi' manga.pk %}"
+                  class="button is-danger is-rounded btn-subscribe subscribeBook"
+                
+                  ><span class="fas fa-heart"></span>Theo dõi</a
+                >
+              {% endif %}
+          </li>
+          <li class="li03">
+              <div id="fb-root"></div>
+            <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v7.0&appId=669944676896059&autoLogAppEvents=1"></script>
+            <div class="fb-like" data-href="{% url 'truyen-chu' manga.Slug %}" data-width="" data-layout="button_count" data-action="like" data-size="large" data-share="false"></div>
+             <div class="fb-share-button" 
+                  data-size="large"
+                  data-href="{% url 'truyen-chu' manga.Slug %}" 
+                  data-layout="button_count">
+               </div>
+          </li>
+        </ul>
+        <div class="txt txt01 story-detail-info">
+          <p>
+            {{manga.Content|safe|linebreaks }}
+          </p>
+        </div>
+      </div>
+    </div>
+   
+    <div class="block02">
+      <div class="title">
+        <h2 class="story-detail-title">Danh sách chương</h2>
+      </div>
+      <div class="box">
+        <div class="works-chapter-list">
+        {% if chap %}
+           {% for chapter in chap %}
+          <div class="works-chapter-item row">
+            <div class="col-md-10 col-sm-10 col-xs-8">
+              {% if chapter.Manga.MangaType.pk == 1 %}
+              <a target="_blank" href="{% url 'truyen-tranh-chap' manga.Slug chapter.SttChap %}"
+                >Chương {{chapter.SttChap}}: {{chapter.Title}}
+              </a>
+              {% else %}
+              <a target="_blank" href="{% url 'truyen-chu-chap' manga.Slug chapter.SttChap %}"
+                >Chương {{chapter.SttChap}}: {{chapter.Title}}
+              </a>
+              {% endif %}
+            </div>
+            <div class="col-md-2 col-sm-2 col-xs-4 text-right">
+              {{chapter.CreateDate|date:'d/m/Y'}}
+              <!-- {{chapter.CreateDate|timesince}} -->
+            </div>
+          </div>
+          {% endfor %}
+        {% else %}
+           <div class="works-chapter-item row">
+              <div class="col-md-10 col-sm-10 col-xs-8">
+                <h2>Chưa Cập Nhập</h2>
+              </div>
+            </div>
+        {% endif %}
+         
+        </div>
+      </div>
+    </div>
+    <div class="block03">
+      <h2 class="story-detail-title">Cùng thể loại</h2>
+      <div class="tile is-ancestor">
+        <div class="tile is-vertical is-parent">
+          <ul class="list-stories grid-6">
+            <!-- {% for cungtheloai in cungloai %}
+            <li>
+              <div class="story-item">
+                <a href="#">
+                  {% if cungtheloai.Manga.Image %}
+                  <img
+                    src="{{cungtheloai.Manga.Image.url}}"
+                    alt="{{cungtheloai.Manga.MangaName}}"
+                  />
+                  {% endif %}
+                </a>
+                <div class="top-notice">
+                  <span class="time-ago"
+                    >{{cungtheloai.Manga.CreateDate|timesince}}</span
+                  >
+                  <span class="type-label hot">Hot</span>
+                </div>
+                <h3 class="title-book">
+                  <a href="#">{{cungtheloai.Manga.MangaName}}</a>
+                </h3>
+                <div class="episode-book">
+                  <a href="#"> Chương 14</a>
+                </div>
+                <div class="more-info">
+                  <div class="title-more">
+                    {{cungtheloai.Manga.MangaName}}
+                  </div>
+                  <div class="title-more-other">
+                    Tên khác: {{cungtheloai.Manga.OrtherName}}
+                  </div>
+                  <p class="info">Tình trạng: Đang Cập Nhật</p>
+                  <p class="info">Lượt xem: 129,375</p>
+                  <p class="info">Lượt theo dõi: 1,436</p>
+                  <div class="list-tags">
+                    {% for cate in category %} {% if cate.Manga.id == cungtheloai.Manga.id %}
+                    <a class="blue" href="#">{{cate.Category.CategoryName}}</a>
+                    {% endif %} {% endfor %}
+                  </div>
+                  <div class="excerpt">
+                    {% if cungtheloai.Manga.Content|length > 150 %}
+                    {{cungtheloai.Manga.Content|slice:"0:185"}}... {% else %}
+                    {{cungtheloai.Manga.Content}} {% endif %}
+                  </div>
+                </div>
+              </div>
+            </li>
+            {% endfor %} -->
+          </ul>
+        </div>
+      </div>
+      <!-- /.list-stories -->
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block  js %}
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '669944676896059',
+        xfbml      : true,
+        version    : 'v7.0'
+      });
+      
+   }
+
+    (function(d, s, id){
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {return;}
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }, function(){
+      $.ajax({
+          url:"{% url 'share' manga.pk %}",
+          dataType:'json',
+          success:function(data){
+          }
+      });
+    }(document, 'script', 'facebook-jssdk'));
+   
+  </script>
+  <script>
+  $(document).on("click",".subscribeBook",function(){
+    var btn = $(this);
+     $.ajax({
+        url:btn.attr("data-url"),
+        dataType:'json',
+        success:function(data)
+        {
+          if(data.succes){
+            // alert("Bạn đã theo dõi truyện")
+            window.location.reload();
+          }
+          if(data.dangnhap)
+          {
+            alert("Vùi lòng đăng nhập để thực hiện theo dõi");
+            window.location.reload();
+          }
+        }
+      });
+  });
+  
+  </script>
+{% endblock   %}

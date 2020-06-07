@@ -1,0 +1,20 @@
+{% for c in manga %}
+<tr>
+  <td class="center">
+    <label class="pos-rel">
+      <input type="checkbox" class="ace" />
+      <span class="lbl"></span>
+    </label>
+  </td>
+  <td>
+    <a href="#">{{c.MangaName}}</a>
+  </td>
+  <td>
+    {% for d in data %} {% if d.Manga.id == c.id %}
+    <span class="label label-sm label-info arrowed arrowed-righ"
+      >{{d.Category.CategoryName}}</span
+    >
+    {% endif %} {% endfor %}
+  </td>
+</tr>
+{% endfor %}

@@ -1,0 +1,32 @@
+{% for c in data %}
+<tr>
+  <td class="center">
+    <label class="pos-rel">
+      <input type="checkbox" class="ace" />
+      <span class="lbl"></span>
+    </label>
+  </td>
+  <td>
+    <a href="#">{{c.LevelName}}</a>
+  </td>
+  <td>{{c.CheckFollow}}</td>
+  <td>{{c.CheckView}}</td>
+  <td>
+    <div class="hidden-sm hidden-xs action-buttons">
+      <a class="blue" href="#">
+        <i class="ace-icon fa fa-search-plus bigger-130"></i>
+      </a>
+      <a class="green js-update-level" data-url=" {% url 'editlevel' c.id %}">
+        <i class="ace-icon fa fa-pencil bigger-130"></i>
+      </a>
+      <a class="red js-delete-level" data-url=" {% url 'deletelevel' c.id %}">
+        <i class="ace-icon fa fa-trash-o bigger-130"></i>
+      </a>
+    </div>
+  </td>
+</tr>
+{% empty %}
+<tr>
+<td>Không Có Dữ Liệu</td>
+</tr>
+{% endfor %}

@@ -1,0 +1,35 @@
+{% load socialaccount %} {% providers_media_js %}
+<div class="login-section">
+  <div class="form-login">
+    <!-- <input type="email" placeholder="Email" id="email_login" /> -->
+    <input
+      type="text"
+      placeholder="Tài Khoản"
+      name="UserName"
+      id="user_login"
+    />
+    <input
+      type="password"
+      placeholder="Mật khẩu"
+      name="Password"
+      id="password_login"
+    />
+    <button id="login_manga" data-url="{% url 'dang-nhap' %}">
+      Đăng nhập
+    </button>
+    <a data-toggle="modal" class="forget-password-link">
+      Quên mật khẩu
+    </a>
+  </div>
+  <div class="social-login">
+    <span>Hoặc đăng nhập bằng: </span>
+    <!-- <a href="{% provider_login_url "facebook" method="js_sdk" %}" class="facebook-link"
+      ><span class="facebook-icon"></span
+    ></a> -->
+    <a href="#" class="facebook-link"
+      ><span class="facebook-icon"></span
+    ></a>
+    <!-- <a href="{% provider_login_url "google" %}" class="google-link"><span class="google-icon"></span></a> -->
+    <a href="#" class="google-link"><span class="google-icon"></span></a>
+  </div>
+</div>

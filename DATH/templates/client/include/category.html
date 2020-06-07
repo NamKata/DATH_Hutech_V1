@@ -1,0 +1,52 @@
+{% load widget_tweaks %} {% load static %}
+<div class="container" id="lstcategory">
+  <div class="level">
+    <div class="level-left mega-list-wrapper">
+      <div class="columns">
+        <div class="column column-menu">
+          <ul class="mega-list">
+            {% for item in lstcate %}
+            <li class="col-sm-3">
+              <a href="{% url 'the-loai-truyen' item.pk %}">{{item.CategoryName}} </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <!-- <div class="column column-menu">
+          <ul class="mega-list">
+            {% for item in lstcate1 %}
+            <li>
+              <a href="#">{{item.CategoryName}}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="column column-menu">
+          <ul class="mega-list">
+            {% for item in row %}
+            <li>
+              <a href="#">{{item.CategoryName}}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="column column-menu">
+          <ul class="mega-list">
+            {% for item in row1 %}
+            <li>
+              <a href="#">{{item.CategoryName}}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div> -->
+      </div>
+    </div>
+    <div class="level-right pc">
+      <img
+        src="{% static 'client/assets/images/menu-icon.jpg' %}"
+        class="mega-menu-cover"
+        alt="img"
+      />
+    </div>
+  </div>
+</div>

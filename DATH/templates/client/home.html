@@ -36,31 +36,60 @@
         {% for truyen in manga %}
         <li>
           <div class="story-item">
-            <a href="{% url 'manga' truyen.id %}">
+            {% if truyen.MangaType.pk == 1 %}
+            <a href="{% url 'truyen-tranh' truyen.Slug %}">
               {% if truyen.Image %}
               <img
                 class="story-cover"
                 src="{{ truyen.Image.url }}"
-                alt="Senpai Có Thích Đàn Em Bb (Big Boobs)"
+                alt="{{truyen.MangaName}}"
               />
               {% endif %}
             </a>
-
+            {% else %}
+            <a href="{% url 'truyen-chu' truyen.Slug %}">
+              {% if truyen.Image %}
+              <img
+                class="story-cover"
+                src="{{ truyen.Image.url }}"
+                alt="{{truyen.MangaName}}"
+              />
+              {% endif %}
+            </a>
+            {% endif %}
             <div class="top-notice">
-              <span class="time-ago">{{truyen.CreateDate|timesince}}</span>
+              {% if truyen.Chapnow == 0 %}
+              <span class="time-ago">Đang cập nhập</span>
+              {% else %}
+              <span class="time-ago">{{truyen.DateUpChap|timesince}}</span>
+              {% endif %}
               <span class="type-label hot">Hot</span>
             </div>
             <h3 class="title-book">
-              <a href="#">{{ truyen.MangaName}}</a>
+              {% if truyen.MangaType.pk == 1 %}
+              <a href="{% url 'truyen-tranh' truyen.Slug %}"
+                >{{ truyen.MangaName}}</a
+              >
+              {% else %}
+              <a href="{% url 'truyen-chu' truyen.Slug %}"
+                >{{ truyen.MangaName}}</a
+              >
+              {% endif %}
             </h3>
             <div class="episode-book">
-              {% for chap in chap %} 
-              {% if chap.Manga.id == truyen.id %}
-              {% if forloop.first %}
-                 <a href="#"> Chương {{chap.SttChap}}</a>
-              {% endif %}
-               
-              {% endif %} {% endfor %}
+              {% if truyen.Chapnow == 0 %}
+              <a href="#"> Đang Cập Nhập </a>
+              {% else %} {% if truyen.MangaType.pk == 1 %}
+              <a
+                href="{% url 'truyen-tranh-chap' truyen.Slug truyen.Chapnow %}"
+              >
+                Chương {{truyen.Chapnow}}
+              </a>
+              {% else %}
+              <a href="{% url 'truyen-chu-chap' truyen.Slug truyen.Chapnow %}">
+                Chương {{truyen.Chapnow}}
+              </a>
+              {% endif %} {% endif %}
             </div>
             <div class="more-info">
               <div class="title-more">
@@ -79,8 +108,8 @@
               </div>
               <div class="excerpt">
                 {% if truyen.Content|length > 150 %}
-                {{truyen.Content|slice:"0:185"}}... {% else %}
-                {{truyen.Content}} {% endif %}
+                {{truyen.Content|slice:"0:185"|safe|linebreaks}}... {% else %}
+                {{truyen.Content|safe|linebreaks}} {% endif %}
               </div>
             </div>
           </div>
@@ -106,28 +135,67 @@
             {% for truyentranh in truyentranh %}
             <li>
               <div class="story-item">
-                <a href="{% url 'manga' truyentranh.id %}">
+                {% if truyentranh.MangaType.pk == 1 %}
+                <a href="{% url 'truyen-tranh' truyentranh.Slug %}">
                   {% if truyentranh.Image %}
                   <img
                     class="story-cover"
                     src="{{ truyentranh.Image.url }}"
-                    alt="Senpai Có Thích Đàn Em Bb (Big Boobs)"
+                    alt="{{truyentranh.MangaName}}"
                   />
                   {% endif %}
                 </a>
+                {% else %}
+                <a href="{% url 'truyen-chu' truyentranh.Slug %}">
+                  {% if truyentranh.Image %}
+                  <img
+                    class="story-cover"
+                    src="{{ truyentranh.Image.url }}"
+                    alt="{{truyentranh.MangaName}}"
+                  />
+                  {% endif %}
+                </a>
+                {% endif %}
 
                 <div class="top-notice">
+                  {% if truyentranh.Chapnow == 0 %}
+                  <span class="time-ago">Đang cập nhập</span>
+                  {% else %}
                   <span class="time-ago"
-                    >{{truyentranh.CreateDate|timesince}}</span
+                    >{{truyentranh.DateUpChap|timesince}}</span
                   >
+                  {% endif %}
                   <span class="type-label hot">Hot</span>
                 </div>
                 <h3 class="title-book">
-                  <a href="#">{{ truyentranh.MangaName}}</a>
+                  {% if truyentranh.MangaType.pk == 1 %}
+                  <a href="{% url 'truyen-tranh' truyentranh.Slug %}"
+                    >{{ truyentranh.MangaName}}</a
+                  >
+                  {% else %}
+                  <a href="{% url 'truyen-chu' truyentranh.Slug %}"
+                    >{{ truyentranh.MangaName}}</a
+                  >
+                  {% endif %}
                 </h3>
                 <div class="episode-book">
-                  <a href="#"> Chương 16</a>
+                  {% if truyentranh.Chapnow == 0 %}
+                  <a href="#"> Đang Cập Nhập </a>
+                  {% else %} {% if truyentranh.MangaType.pk == 1 %}
+                  <a
+                    href="{% url 'truyen-tranh-chap' truyentranh.Slug truyentranh.Chapnow %}"
+                  >
+                    Chương {{truyentranh.Chapnow}}
+                  </a>
+                  {% else %}
+                  <a
+                    href="{% url 'truyen-chu-chap' truyentranh.Slug truyentranh.Chapnow %}"
+                  >
+                    Chương {{truyentranh.Chapnow}}
+                  </a>
+                  {% endif %} {% endif %}
                 </div>
+              
                 <div class="more-info">
                   <div class="title-more">
                     {{ truyentranh.MangaName}}
@@ -145,8 +213,8 @@
                   </div>
                   <div class="excerpt">
                     {% if truyentranh.Content|length > 150 %}
-                    {{truyentranh.Content|slice:"0:185"}}... {% else %}
-                    {{truyentranh.Content}} {% endif %}
+                    {{truyentranh.Content|slice:"0:185"|safe|linebreaks}}... {% else %}
+                    {{truyentranh.Content|safe|linebreaks}} {% endif %}
                   </div>
                 </div>
               </div>
@@ -166,7 +234,7 @@
     <!-- /.female -->
     <div class="male">
       <div class="caption" id="list-male">
-        <a href="{% url 'more-manga' %}"
+        <a href="#"
           ><span class="male-icon"></span>Truyện Chữ</a
         >
       </div>
@@ -176,27 +244,64 @@
             {% for truyentranh in truyenchu %}
             <li>
               <div class="story-item">
-                <a href="{% url 'manga' truyentranh.id %}">
+                {% if truyentranh.MangaType.pk == 1 %}
+                <a href="{% url 'truyen-tranh' truyentranh.Slug %}">
                   {% if truyentranh.Image %}
                   <img
                     class="story-cover"
                     src="{{ truyentranh.Image.url }}"
-                    alt="Senpai Có Thích Đàn Em Bb (Big Boobs)"
+                     alt="{{truyentranh.MangaName}}"
                   />
                   {% endif %}
                 </a>
-
+                {% else %}
+                <a href="{% url 'truyen-chu' truyentranh.Slug %}">
+                  {% if truyentranh.Image %}
+                  <img
+                    class="story-cover"
+                    src="{{ truyentranh.Image.url }}"
+                    alt="{{truyentranh.MangaName}}"
+                  />
+                  {% endif %}
+                </a>
+                {% endif %}
                 <div class="top-notice">
+                  {% if truyentranh.Chapnow == 0 %}
+                  <span class="time-ago">Đang cập nhập</span>
+                  {% else %}
                   <span class="time-ago"
-                    >{{truyentranh.CreateDate|timesince}}</span
+                    >{{truyentranh.DateUpChap|timesince}}</span
                   >
+                  {% endif %}
                   <span class="type-label hot">Hot</span>
                 </div>
-                <h3 class="title-book">
-                  <a href="#">{{ truyentranh.MangaName}}</a>
+            <h3 class="title-book">
+                  {% if truyentranh.MangaType.pk == 1 %}
+                  <a href="{% url 'truyen-tranh' truyentranh.Slug %}"
+                    >{{ truyentranh.MangaName}}</a
+                  >
+                  {% else %}
+                  <a href="{% url 'truyen-chu' truyentranh.Slug %}"
+                    >{{ truyentranh.MangaName}}</a
+                  >
+                  {% endif %}
                 </h3>
                 <div class="episode-book">
-                  <a href="#"> Chương 16</a>
+                  {% if truyentranh.Chapnow == 0 %}
+                  <a href="#"> Đang Cập Nhập </a>
+                  {% else %} {% if truyentranh.MangaType.pk == 1 %}
+                  <a
+                    href="{% url 'truyen-tranh-chap' truyentranh.Slug truyentranh.Chapnow %}"
+                  >
+                    Chương {{truyentranh.Chapnow}}
+                  </a>
+                  {% else %}
+                  <a
+                    href="{% url 'truyen-chu-chap' truyentranh.Slug truyentranh.Chapnow %}"
+                  >
+                    Chương {{truyentranh.Chapnow}}
+                  </a>
+                  {% endif %} {% endif %}
                 </div>
                 <div class="more-info">
                   <div class="title-more">
@@ -215,8 +320,8 @@
                   </div>
                   <div class="excerpt">
                     {% if truyentranh.Content|length > 150 %}
-                    {{truyentranh.Content|slice:"0:185"}}... {% else %}
-                    {{truyentranh.Content}} {% endif %}
+                    {{truyentranh.Content|slice:"0:185"|safe|linebreaks}}... {% else %}
+                    {{truyentranh.Content|safe|linebreaks}} {% endif %}
                   </div>
                 </div>
               </div>
@@ -226,7 +331,9 @@
           </ul>
           <!-- /.list-stories -->
           <div class="has-text-centered">
-            <a href="{% url 'list-chu' %}" class="view-more-btn-chu">Xem thêm nhiều truyện</a>
+            <a href="{% url 'list-chu' %}" class="view-more-btn-chu"
+              >Xem thêm nhiều truyện</a
+            >
           </div>
         </div>
       </div>

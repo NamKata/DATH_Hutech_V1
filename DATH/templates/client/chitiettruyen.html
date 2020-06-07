@@ -1,0 +1,355 @@
+{% extends "client/index.html" %} {% load static %} {% block content %}
+<section class="main-content">
+  <div class="container" id="pageregman">
+    <div class="title-list">Thông tin truyện {{mancate.0.Manga.MangaName}}</div>
+    {% if success %}
+    <div class="alert alert-danger">Thành công</div>
+    {% endif %}
+    <!-- <div class="nav_bar" role="tablist">
+      <ul>
+        <li class="active">
+          <a href="#work" role="tab" class="active" data-toggle="tab"
+            >Truyện Tranh</a
+          >
+        </li>
+        <li>
+          <a href="#hire" class="" role="tab" data-toggle="tab">Truyện Chữ</a>
+        </li>
+      </ul>
+    </div> -->
+    <div class="messages">
+     <form method="post" enctype="multipart/form-data" id="Dangkytruyen">
+            {% csrf_token %}
+            <div class="col-lg-2">
+              {% if mancate.0.Manga.Image %}
+                  <img
+                id="ImageManga"
+                class="image-avatar"
+                src="{{mancate.0.Manga.Image.url}}"
+                width="150px"
+                height="150px"
+              />
+              {% endif %}
+            
+              <input
+                type="file"
+                multiple="false"
+                name="Image"
+                id="uploadavatar"
+                style="display: none;"
+                onchange="img_pathUrl(this)"
+              />
+              <button
+                class="button is-danger btn-avatar"
+                type="button"
+                style="margin-left: 25px;"
+                id="clickFile"
+              >
+                Chọn Hình
+              </button>
+            </div>
+            <div class="col-lg-10">
+              <div class="field">
+                <p class="txt">Tên Truyện :</p>
+                <p class="control">
+                  <input
+                    class="input"
+                    name="MangaName"
+                    id="MangaName"
+                    type="text"
+                    value="{{mancate.0.Manga.MangaName}}"
+                    placeholder="Đảo Hải Tặc"
+                  />
+                </p>
+              </div>
+              <div class="field">
+                <p class="txt">Đường dẫn</p>
+                <p class="control">
+                  <input
+                    class="input"
+                    type="text"
+                    id="Slug"
+                    value="{{mancate.0.Manga.Slug}}"
+                    name="Slug"
+                    placeholder="dao-hai-tac"
+                  />
+                </p>
+              </div>
+              <div class="field">
+                <p class="txt">Tên Khác:</p>
+                <p class="control">
+                  <input
+                    class="input"
+                    id="OrtherName"
+                    name="OrtherName"
+                    value="{{mancate.0.Manga.OrtherName}}"
+                    type="text"
+                    placeholder="Onepice, Đảo Kho Báu, Vua Cướp Biển"
+                  />
+                </p>
+              </div>
+              <div class="field">
+                <p class="txt">Tác Giả :</p>
+                <p class="control">
+                  <input
+                    class="input"
+                    type="text"
+                    id="Author"
+                    value="{{mancate.0.Manga.Author}}"
+                    name="Author"
+                    placeholder="Oda "
+                  />
+                </p>
+              </div>
+              <div class="field">
+                <p class="txt">Người Dịch :</p>
+                <p class="control">
+                  <input
+                    class="input"
+                    type="text"
+                    id="Editor"
+                    value="{{mancate.0.Manga.Editor}}"
+                    name="Editor"
+                    placeholder="49"
+                  />
+                </p>
+              </div>
+              <!-- <div class="field">
+                <p class="txt">Ngày Bắt Đầu :</p>
+                <p class="control">
+                  <input
+                    class="input"
+                    type="date"
+                    name="StartDate"
+                    value="{{mancate.0.Manga.StartDate}}"
+                    id="StartDate"
+                    placeholder="1001-01-01"
+                  />
+                </p>
+              </div> -->
+               <div class="field user-field">
+                 <p class="txt">Kiểu Truyện :</p>
+               
+                 <p class="control" style="margin-left: 10%;">
+                {% if mancate.0.Manga.Formality.pk == 1 %}
+                 <input type="radio" id="Formality" name="Formality" value="1" checked>
+                 <label for="Formality" class="col-sm-5">Truyện Covert</label>
+                 <input type="radio" id="Formality1" name="Formality" value="2">
+                 <label for="Formality1" class="col-sm-5">Truyện Sáng Tác</label>
+                {% else %}
+                 <input type="radio" id="Formality" name="Formality" value="1" >
+                 <label for="Formality" class="col-sm-5">Truyện Covert</label>
+                 <input type="radio" id="Formality1" name="Formality" value="2" checked>
+                 <label for="Formality1" class="col-sm-5">Truyện Sáng Tác</label>
+                {% endif %}
+                 
+                 </p>
+               
+               </div>
+                <br/>
+               <div class="field">
+                <p class="txt">Nhóm Truyện :</p>
+                <p class="control"style="margin-left: 10%;" >
+                {% if mancate.0.Manga.MangaType.pk == 1 %}
+                <input type="checkbox" id="MangaType" name="MangaType" value="1" checked>
+                <label for="MangaType" class="col-sm-5"> Truyện Tranh</label>
+                <input type="checkbox" id="MangaType1" name="MangaType" value="2">
+                <label for="MangaType1" class="col-sm-5"> Truyện Chữ</label>
+                {% else %}
+                  <input type="checkbox" id="MangaType" name="MangaType" value="1" >
+                <label for="MangaType" class="col-sm-5"> Truyện Tranh</label>
+                <input type="checkbox" id="MangaType1" name="MangaType" value="2" checked>
+                <label for="MangaType1" class="col-sm-5"> Truyện Chữ</label>
+                {% endif %}
+               
+                </p>
+               </div>
+               <br/>
+               <div class="field">
+                 <p class="txt">Thể loại :</p>
+                 <p class="control" style="margin-left: 10%;">
+                    {% for mancate in mancate %}
+                     <input type="checkbox" id="Category{{mancate.Category.pk}}" name="MangaCategory[]" value="{{mancate.Category.pk}}" style="margin: 5px 5px 5px 5px; "  checked>
+                        <label for="Category{{mancate.Category.pk}}" class="col-sm-3"  style="margin: 5px 5px 5px 5px;  ">{{mancate.Category.CategoryName}}</label>
+                    {% endfor %}
+                    
+                    {% for cate in cate %}
+                        <input type="checkbox" id="Category{{cate.pk}}" name="Category[]" value="{{cate.pk}}" style="margin: 5px 5px 5px 5px;" >
+                        <label for="Category{{cate.pk}}" class="col-sm-3" style="margin: 5px 5px 5px 5px;">{{cate.CategoryName}}</label>
+                    {% endfor %}
+                 </p>
+               </div>
+            </div>
+            <div class="row" style="margin: 30px 30px 30px 30px;">
+              <div class="field">
+                <p class="txt">Nội dung:</p>
+                <p class="control" >
+                  <textarea name="Content" id="Content" >{{mancate.0.Manga.Content|safe|linebreaks}}</textarea>
+                </p>
+              </div>
+            </div>
+            <div style="text-align: center; margin-bottom:  15px;">
+              <button class="button is-danger" type="submit">Cập nhập thông tin truyện</button>
+            </div>
+          </form>
+    </div>
+  </div>
+</section>
+{% endblock %} {% block js %}
+
+<script type="text/javascript">
+  $("#clickFile").click(function () {
+    $("#uploadavatar").click();
+  });
+  $("#MangaName").keyup(function () {
+    var str = $(this).val();
+    var trims = $.trim(str);
+    // trims.replace(/[^a-z0-9]/gi, '-').replace(/-+/g, '-').replace(/^-|-$/g, '-');
+    var slug = trims
+      .replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi, "a")
+      .replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi, "e")
+      .replace(/i|í|ì|ỉ|ĩ|ị/gi, "i")
+      .replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/gi, "o")
+      .replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, "u")
+      .replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, "y")
+      .replace(/đ/gi, "d")
+      .replace(
+        /\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|_/gi,
+        ""
+      )
+      .replace(/ /gi, "-")
+      .replace(/\-\-\-\-\-/gi, "")
+      .replace(/\-\-\-\-/gi, "-")
+      .replace(/\-\-\-/gi, "-")
+      .replace(/\-\-/gi, "-")
+      .replace(/\@\-|\-\@|\@/gi, "");
+    // $('#slug').val(slug.toLowerCase()+".html")
+    $("#Slug").val(slug.toLowerCase());
+  });
+  // $("#pageregman").on("submit","#Dangkytruyen",function(){
+  //   var form = $(this);
+  //   var MangaName = $("#MangaName").val();
+  //   var OrtherName = $("#OrtherName").val();
+  //   var Slug = $("#Slug").val();
+  //   var Author = $("#Author").val();
+  //   var Editor = $("#Editor").val();
+  //   var StartDate = $("#StartDate").val();
+  //   var Content = $("textarea#Content").val();
+  //   var Image = $("#uploadavatar").val();
+  //   $.ajax({
+  //     // headers: {
+  //     //   "Content-Type": "application/json",
+  //     //   "X-CSRFToken": getCookie("csrftoken"),
+  //     // },
+  //     url: form.attr("action"),
+  //     dataType: "json",
+  //     data: {
+  //       MangaName: MangaName,
+  //       OrtherName: OrtherName,
+  //       Slug: Slug,
+  //       Author: Author,
+  //       Editor: Editor,
+  //       StartDate: StartDate,
+  //       Content: Content,
+  //       Image: Image,
+  //     },
+  //     method: form.attr("method"),
+  //     success: function (data) {
+  //       if (data.Success) {
+  //         alert("Thanh cong.................");
+  //         window.location.href = "/";
+  //       } else {
+  //         alert("That bai.................");
+  //       }
+  //     },
+  //   });
+  // });
+
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != "") {
+      var cookies = document.cookie.split(";");
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = jQuery.trim(cookies[i]);
+        if (cookie.substring(0, name.length + 1) == name + "=") {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+</script>
+<script>
+  function img_pathUrl(input) {
+    // $('#ImageManga')[0].src = (window.URL ? URL : webkitURL).createObjectURL(input.files[0]);
+    $("#ImageManga")[0].src = URL.createObjectURL(event.target.files[0]);
+  }
+  $("#MangaType").click(function(){
+    if($("#MangaType1").attr('checked',true)){
+     $("#MangaType1").removeAttr('checked');
+    }
+  });
+  $("#MangaType1").click(function(){
+    if($("#MangaType").attr('checked',true)){
+     $("#MangaType").removeAttr('checked');
+    }
+  });
+</script>
+<script type="text/javascript">
+      tinymce.init({
+        selector: "textarea",
+        plugins: "emoticons hr image link lists charmap table",
+        toolbar: "formatgroup paragraphgroup insertgroup",
+        toolbar_groups: {
+          formatgroup: {
+            icon: "format",
+            tooltip: "Formatting",
+            items:
+              "bold italic underline strikethrough | forecolor backcolor | superscript subscript | removeformat",
+          },
+          paragraphgroup: {
+            icon: "paragraph",
+            tooltip: "Paragraph format",
+            items:
+              "h1 h2 h3 | bullist numlist | alignleft aligncenter alignright | indent outdent",
+          },
+          insertgroup: {
+            icon: "plus",
+            tooltip: "Insert",
+            items: "link image emoticons charmap hr",
+          },
+        },
+        skin: "outside",
+        toolbar_location: "bottom",
+        menubar: false,
+        height: 350,
+        with: 500,
+        file_picker_types: "image",
+        file_picker_callback: function (cb, value, meta) {
+          var input = document.createElement("input");
+          input.setAttribute("type", "file");
+          input.setAttribute("accept", "image/*");
+
+          input.onchange = function () {
+            var file = this.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function () {
+              var id = "blobid" + new Date().getTime();
+              var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+              var base64 = reader.result.split(",")[1];
+              var blobInfo = blobCache.create(id, file, base64);
+              blobCache.add(blobInfo);
+
+              // call the callback and populate the Title field with the file name
+              cb(blobInfo.blobUri(), { title: file.name });
+            };
+            reader.readAsDataURL(file);
+          };
+          input.click();
+        },
+      });
+    </script>
+
+{% endblock %}

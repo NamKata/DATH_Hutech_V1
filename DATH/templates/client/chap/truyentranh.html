@@ -1,0 +1,427 @@
+{% extends "client/index.html" %} {% load static %} {% block content %}
+<section class="main-content on">
+  <div class="story-see container">
+    <div class="story-see-main">
+      <div class="block">
+        <div class="box">
+          <div id="path" class="path-top">
+            <ol class="breadcrumb" itemscope itemtype="#">
+              <li itemprop="itemListElement" itemscope itemtype="#">
+                <a itemprop="item" href="/">
+                  <span itemprop="name">Trang Chủ</span>
+                </a>
+                <meta itemprop="position" content="1" />
+              </li>
+              <li itemprop="itemListElement" itemscope itemtype="#">
+                <a
+                  itemprop="item"
+                  href="{% url 'truyen-tranh' chap.Manga.Slug  %}"
+                >
+                  <span itemprop="name">{{chap.Manga.MangaName}}</span>
+                </a>
+                <meta itemprop="position" content="2" />
+              </li>
+              <li itemprop="itemListElement" itemscope itemtype="#">
+                <a
+                  itemprop="item"
+                  href="{% url 'truyen-tranh-chap' chap.Manga.Slug chap.SttChap %}"
+                >
+                  <span itemprop="name">Chương {{chap.SttChap}}</span>
+                </a>
+                <meta itemprop="position" content="3" />
+              </li>
+            </ol>
+          </div>
+          <h1 class="detail-title">
+            <a href="{% url 'truyen-tranh' chap.Manga.Slug %}"
+              >{{chap.Manga.MangaName}}</a
+            >
+            Chap {{chap.SttChap}}: {{chap.Title}}
+          </h1>
+        </div>
+        <div class="story-see-content">
+          {{chap.Content|safe|linebreaks}}
+          <br />
+        </div>
+
+        <div class="story-detail has-background-white on">
+          <div id="path">
+            <ol class="breadcrumb" itemscope itemtype="#">
+              <li itemprop="itemListElement" itemscope itemtype="#">
+                <a itemprop="item" href="/">
+                  <span itemprop="name">Trang Chủ</span>
+                </a>
+                <meta itemprop="position" content="1" />
+              </li>
+              <li
+                itemprop="itemListElement"
+                itemscope
+                itemtype="http://schema.org/ListItem"
+              >
+                <a
+                  itemprop="item"
+                  href="{% url 'truyen-tranh' chap.Manga.Slug %}"
+                >
+                  <span itemprop="name">{{chap.Manga.MangaName}}</span>
+                </a>
+                <meta itemprop="position" content="2" />
+              </li>
+              <li
+                itemprop="itemListElement"
+                itemscope
+                itemtype="http://schema.org/ListItem"
+              >
+                <a
+                  itemprop="item"
+                  href="{% url 'truyen-tranh-chap' chap.Manga.Slug chap.SttChap %}"
+                >
+                  <span itemprop="name">Chương {{chap.SttChap}}</span>
+                </a>
+                <meta itemprop="position" content="3" />
+              </li>
+            </ol>
+          </div>
+
+          <div class="comment-container">
+            <span class="story-detail-title"
+              ><i class="fas fa-comments"></i>Bình Luận (<span
+                class="comment-count"
+                >124</span
+              >)</span
+            >
+            <div class="group01 comments-container">
+              <div
+                class="notify"
+                style="
+                  padding: 10px;
+                  margin-bottom: 10px;
+                  background-color: #fff;
+                "
+              >
+                Like
+                <a rel="nofollow" href="#" target="_blank">Fanpage</a>
+                để ủng hộ Web Truyện và cập nhật các thông tin mới nhất về các
+                bộ truyện nhé.
+                <div
+                  class="fb-like"
+                  data-href="https://www.facebook.com/kata1112"
+                  data-send="false"
+                  data-layout="button_count"
+                  data-action="like"
+                  data-show-faces="true"
+                  data-share="false"
+                ></div>
+              </div>
+              <div class="form-comment main_comment">
+                <div class="message-content">
+                  <div class="input-comment">
+                    {% if user %}
+                    <span class="col-md-6 col-sm-6 col-xs-12 text-center"
+                      ><input
+                        value="{{user.UserName}}"
+                        class="input"
+                        id="name_comment"
+                        type="text"
+                        placeholder="Họ tên"
+                        disabled
+                    /></span>
+                    <span class="col-md-6 col-sm-6 col-xs-12 text-center"
+                      ><input
+                        value="{{user.Email}}"
+                        class="input"
+                        id="email_comment"
+                        type="email"
+                        placeholder="Email"
+                        disabled
+                    /></span>
+                    {% else %}
+                    <span class="col-md-6 col-sm-6 col-xs-12 text-center"
+                      ><input
+                        value=""
+                        class="input"
+                        id="name_comment"
+                        type="text"
+                        placeholder="Họ tên"
+                    /></span>
+                    <span class="col-md-6 col-sm-6 col-xs-12 text-center"
+                      ><input
+                        value=""
+                        class="input"
+                        id="email_comment"
+                        type="email"
+                        placeholder="Email"
+                    /></span>
+                    {% endif %}
+                  </div>
+                  <div class="mess-input">
+                    <textarea
+                      class="textarea"
+                      placeholder="Nội dung bình luận"
+                      id="content_comment"
+                    ></textarea>
+                    <!-- <button type="submit" class="click_emoji"></button> -->
+                    <button
+                      type="submit"
+                      data-url="{% url 'binhluan' chap.pk %}"
+                      id="comment_post"
+                      class="submit_comment"
+                    ></button>
+                  </div>
+                </div>
+              </div>
+              <div class="list-comment">
+                {% if comment %} {% for item in comment %}
+                <article
+                  class="info-comment child_728007 parent_0 comment-main-level"
+                >
+                  <div class="outsite-comment comment-main-level">
+                    <figure class="avartar-comment">
+                      {% if item.User_Comic.Image %}
+                      <img src="{{item.User_Comic.Image.url}}" alt="L" />
+                      {% else %}
+                      <img
+                        src="{% static 'client/assets/images/noavatar.png' %}"
+                        alt="L"
+                      />
+                      {% endif %}
+                    </figure>
+                    <div class="item-comment">
+                      <div class="outline-content-comment">
+                        <div>
+                          <strong>{{item.User_Comic.UserName}}</strong
+                          ><span class="title-user-comment title-hidden">
+                            {% if item.User_Comic.Group.pk == 3 %} Ẩn Danh {% elif item.User_Comic.Group.pk == 2 %} Người Dùng {% endif %}
+                          </span>
+                          <span class="time"
+                            >{{item.CreateDate|timesince}}</span
+                          >
+                        </div>
+                        <div class="content-comment">
+                          <strong></strong> {{item.Content|safe|linebreaks}}
+                        </div>
+                      </div>
+                      <div class="action-comment">
+                        <span class="like-comment" data-id="728007"
+                          ><i class="fas fa-thumbs-up"></i>
+                          <span class="total-like-comment">0</span></span
+                        >
+                        <span
+                          class="reply-comment"
+                          data-parent="0"
+                          data-id="728007"
+                          data-user="0"
+                          data-replyname="L"
+                          ><i class="far fa-comment"></i> Trả lời</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </article>
+                {% endfor %} {% else %}
+                <p>Chưa có bình luận nào cả</p>
+                {% endif %}
+
+                <article
+                  class="info-comment child_663202 parent_0 comment-main-level"
+                >
+                  <div class="outsite-comment comment-main-level">
+                    <figure class="avartar-comment">
+                      <img
+                        src="{% static '/client/assets/images/noavatar.png' %}"
+                        alt="Đuỹ Mều Mập"
+                      />
+                    </figure>
+                    <div class="item-comment">
+                      <div class="outline-content-comment">
+                        <div>
+                          <strong>Đuỹ Mều Mập</strong
+                          ><span class="title-user-comment title-hidden"
+                            >Ẩn Danh</span
+                          >
+                          <span class="time">14 Ngày Trước</span>
+                        </div>
+                        <div class="content-comment">
+                          <strong></strong> truyện đang dần bị lan man so vs cốt
+                          truyện lúc đầu, chap 187 lun r mà vẫn chưa đâu vào
+                          đâu, nét vẽ thì xấu khỏi nói... mình theo dõi từ những
+                          chap đầu tiên, riết r thấy truyện xa vời vs định nghĩ
+                          hay của lúc đầu lắm r
+                        </div>
+                      </div>
+                      <div class="action-comment">
+                        <span class="like-comment" data-id="663202"
+                          ><i class="fas fa-thumbs-up"></i>
+                          <span class="total-like-comment">1</span></span
+                        >
+                        <span
+                          class="reply-comment"
+                          data-parent="0"
+                          data-id="663202"
+                          data-user="0"
+                          data-replyname="Đuỹ Mều Mập"
+                          ><i class="far fa-comment"></i> Trả lời</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+            <div class="load-more load_more_comment">
+              <a class="button is-info">Xem thêm nhiều bình luận</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="story-see-footer has-background-white on">
+  <div class="container">
+    <div class="level">
+      <div class="level-left">
+        <ul class="list-01">
+          <li>
+            <a class="" href="/"
+              ><i class="fas fa-home"></i>
+              <span class="control-see">Trang chủ</span></a
+            >
+          </li>
+          <li>
+            <a class="" href="javascript:void(0);" id="faul"
+              ><i class="fas fa-exclamation-circle"></i>
+              <span class="control-see">Báo lỗi</span></a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="center level">
+        <div class="prev level-left">
+          <a
+            class="link-prev-chap"
+            href="/master/"
+            id="prev_link_chap"
+            title="{{chap.Manga.MangaName}}"
+            ><i class="fas fa-arrow-circle-left"></i
+          ></a>
+        </div>
+        <select class="selectEpisode">
+          {% for list in listchap %} {% if list.Manga.id == chap.Manga.id %} {% if list.id == chap.id %}
+          <option
+            selected="selected"
+            value="{% url 'truyen-tranh-chap' chap.Manga.Slug list.SttChap %}"
+            >Chương {{list.SttChap}}</option
+          >
+          {% else %}
+          <option
+            value="{% url 'truyen-tranh-chap' chap.Manga.Slug list.SttChap %}"
+            >Chương {{list.SttChap}}</option
+          >
+          {% endif %} {% endif %} {% endfor %}
+        </select>
+        <div class="next level-right">
+          <a class="link-next-chap" id="next_link_chap"
+            ><i class="fas fa-arrow-circle-right"></i
+          ></a>
+        </div>
+      </div>
+      <div class="level-right">
+        <ul class="list-01">
+          <li>
+            <a class="" href="/"
+              ><i class="fas fa-home"></i>
+              <span class="control-see">Trang chủ</span></a
+            >
+          </li>
+          <li>
+            <a class="" href="javascript:void(0);" id="faul"
+              ><i class="fas fa-exclamation-circle"></i>
+              <span class="control-see">Báo lỗi</span></a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %} {% block js %}
+<!-- <script type="text/javascript">
+var prevchap=document.getElementById('prev_link_chap');
+prevchap.addEventListener('keyup',function(event){
+  if (event.keyCode === 37) {
+   event.preventDefault();
+   document.getElementById("prev_link_chap").click();
+  }
+});
+</script> -->
+<script type="text/javascript">
+  $(document).on("keydown", function (event) {
+    if (event.which == 37) {
+      $("#prev_link_chap").trigger("click");
+      //or
+      window.location = $("#prev_link_chap").attr("href");
+    } else if (event.which == 39) {
+      $("#next_link_chap").trigger("click");
+      //or
+      window.location = $("#next_link_chap").attr("href");
+    }
+  });
+  //  $("#next_link_chap").click(function(){
+  //     var SttChap = {{chap.SttChap}};
+  //     var MangaId = {{chap.Manga.id}};
+  //     $.ajax({
+  //           url: "/next-chap//",
+  //           dataType: "json",
+  //           data: {
+  //             SttChap: SttChap,
+  //             MangaId: MangaId,
+  //           },
+  //           // type:"GET",
+  //           success: function (data) {
+  //             if (data.Success) {
+  //               alert(data.SttChap);
+  //             } else {
+  //             }
+  //           },
+  //         });
+  //     });
+  // $(function(){
+  //   // $("a#next_link_chap").attr("href","/truyen-tranh/"+{{chap.Manga.Slug}}+"/chương-"+{{chap.SttChap}}+1);
+  //   var chuong  = {{chap.SttChap}};
+  //   const Idd = parseInt(chuong+1);
+  //   var url = "{% url 'truyen-tranh-chap' chap.Manga.Slug  chap.SttChap %}"
+  //   $("a#next_link_chap").attr("href",url);
+  //   var val = $("a#next_link_chap").attr("href");
+  //   alert(Idd);
+  // });
+  $("#comment_post").click(function () {
+    var UserName = $("#name_comment").val();
+    var Email = $("#email_comment").val();
+    var Content = $("#content_comment").val();
+    var btn = $(this);
+    $.ajax({
+      url: btn.attr("data-url"),
+      dataType: "json",
+      data: {
+        UserName: UserName,
+        Email: Email,
+        Content: Content,
+      },
+      success: function (data) {
+        if (data.success) {
+          alert("Đăng bình luận của " + UserName + " thành công !");
+          window.location.reload();
+          $("#name_comment").val("");
+          $("#email_comment").val("");
+          $("#content_comment").val("");
+        } else {
+          alert("Đăng bình luận của " + UserName + " thất bại !");
+          $("#name_comment").val("");
+          $("#email_comment").val("");
+          $("#content_comment").val("");
+        }
+      },
+    });
+  });
+</script>
+{% endblock %}

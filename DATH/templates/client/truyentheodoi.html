@@ -1,0 +1,117 @@
+{% extends "client/index.html" %} {% load static %} {% block content %}
+<section class="main-content">
+  <div class="container story-list">
+    <div class="title-list">Truyện Đang Theo Dõi</div>
+    <div class="tile is-ancestor">
+      <div class="tile is-vertical is-parent">
+        {% if manga %}
+        <ul class="list-stories grid-6">
+          {% for man in manga %}
+          <li>
+            <div class="story-item">
+              <span
+                class="remove-subscribe"
+                title="Bỏ Theo Dõi"
+                data-id="{{man.Manga.id}}"
+                ><i class="far fa-times-circle"></i
+              ></span>
+              {% if man.Manga.MangaType.pk == 1 %}
+              <a
+                href="{% url 'truyen-tranh' man.Manga.Slug %}"
+                title="{{man.Manga.MangaName}}"
+              >
+                {% if man.Manga.Image %}
+                <img
+                  class="story-cover"
+                  src="{{ man.Manga.Image.url }}"
+                  alt="{{man.Manga.MangaName}}"
+                />
+                {% endif %}</a
+              >
+              {% else %}
+              <a
+                href="{% url 'truyen-chu' man.Manga.Slug %}"
+                title="{{man.Manga.MangaName}}"
+              >
+                {% if man.Manga.Image %}
+                <img
+                  class="story-cover"
+                  src="{{ man.Manga.Image.url }}"
+                  alt="{{man.Manga.MangaName}}"
+                />
+                {% endif %}</a
+              >
+              {% endif %}
+
+              <div class="top-notice">
+                <span class="time-ago">19 Ngày Trước</span>
+                <span class="type-label hot">Hot</span>
+              </div>
+              <h3 class="title-book">
+                {% if man.Manga.MangaType.pk == 1 %}
+                <a
+                  href="{% url 'truyen-tranh' man.Manga.Slug %}"
+                  title="{{man.Manga.MangaName}}"
+                  >{{man.Manga.MangaName}}</a
+                >
+                {% else %}
+                <a
+                  href="{% url 'truyen-chu' man.Manga.Slug %}"
+                  title="{{man.Manga.MangaName}}"
+                  >{{man.Manga.MangaName}}</a
+                >
+                {% endif %}
+              </h3>
+              <div class="episode-book">
+                {% if man.Manga.Chapnow == 0 %}
+                  <a href="#"> Đang cập nhập</a>
+                  {% else %} {% if man.Manga.MangaType.pk == 1 %}
+                  <a
+                    href="{% url 'truyen-tranh-chap' man.Manga.Slug man.Manga.Chapnow %}"
+                  >
+                    Chương {{man.Manga.Chapnow}}
+                  </a>
+                  {% else %}
+                  <a
+                    href="{% url 'truyen-chu-chap' man.Manga.Slug man.Manga.Chapnow %}"
+                  >
+                    Chương {{man.Manga.Chapnow}}
+                  </a>
+                  {% endif %} {% endif %}
+              </div>
+              <div class="more-info">
+                <div class="title-more">{{man.Manga.MangaName}}</div>
+                <div class="title-more-other">
+                  Tên khác: {{man.Manga.OrtherName}}
+                </div>
+                <p class="info">Tình trạng: Đang Cập Nhật</p>
+                <p class="info">Lượt xem: 11,922,553</p>
+                <p class="info">Lượt theo dõi: 13,335</p>
+                <div class="list-tags">
+                  {% for cate in category %} {% if cate.Manga.id == man.Manga.id%}
+                  <a class="blue" href="#">{{cate.Category.CategoryName}}</a>
+                  {% endif %} {% endfor %}
+                </div>
+                <div class="excerpt">
+                  {% if man.Manga.Content|length > 150 %}
+                  {{man.Manga.Content|slice:"0:185"}}... {% else %}
+                  {{man.Manga.Content}} {% endif %}
+                </div>
+              </div>
+            </div>
+            <!-- /.story-item -->
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        
+         <p style="text-align: center; color: red;font-size: 15px;">Bạn chưa theo dõi truyện nào ^^</p>
+         
+        {% endif %}
+      </div>
+    </div>
+    <!-- /.list-stories -->
+  </div>
+</section>
+<!-- /.main-content -->
+{% endblock %}

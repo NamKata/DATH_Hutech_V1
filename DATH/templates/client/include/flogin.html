@@ -1,0 +1,95 @@
+{% load static %} {% load widget_tweaks %}
+{% if UserName  %}
+
+<div class="top-buttons has-login">
+  <div class="notify home smp">
+    <a href="#"><i class="fas fa-home"></i></a>
+  </div>
+  <div class="notify center" data-id="notification">
+    <i class="fas fa-bell"></i>
+    <div class="list-messages">
+      <div class="title-message">Thông báo</div>
+      <ul>
+        <li class="no-result" style="padding: 10px;">
+          Không Có Thông Báo Nào!
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="notify center">
+    <i class="fas fa-envelope"></i>
+    <div class="list-messages">
+      <div class="title-message">Tin nhắn</div>
+      <ul>
+        <li class="no-result" style="padding: 10px;">
+          Không Có Tin Nhắn Nào!
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="notify center btn-search smp" for="focus-input">
+    <i class="fas fa-search"></i>
+  </div>
+  <div class="notify user center">
+    <span class="avatar-menu"
+      ><img src="{% static 'client/assets/images/noavatar.png' %}"
+    /></span>
+    <div class="notify btn-user smp">
+      <i class="fas fa-user-circle"></i>
+    </div>
+    <ul class="user-links">
+      <li>
+        <a href="{% url 'info' UserName.id%}"
+          ><i class="fas fa-user-circle"></i> Thông tin tài khoản </a
+        >
+      </li>
+      <li>
+        <a href="{% url 'dang-ky-truyen'  %}"
+          ><i class="fas fa-heart"></i> Đăng ký truyện</a
+        >
+      </li>
+      <li>
+        <a href="{% url 'tu-truyen'  UserName.id  %}"
+          ><i class="fas fa-heart"></i> Tủ truyện của tôi</a
+        >
+      </li>
+      <li>
+        <a href="{% url 'follow' UserName.id %}"
+          ><i class="fas fa-heart"></i> Theo dõi</a
+        >
+      </li>
+      <li>
+        <a href="#"
+          ><i class="fas fa-history"></i> Lịch sử</a
+        >
+      </li>
+
+      <li>
+        <a href="{% url 'message' %}"
+          ><i class="fas fa-envelope"></i> Tin nhắn</a
+        >
+      </li>
+      <li>
+        <a href="{% url 'doi-mat-khau'  UserName.id %}"><i class="fas fa-lock"></i> Đổi mật khẩu</a>
+      </li>
+      <!--<li>
+                                    <a href="http://truyenqq.com/dang-ky-nhom-dich.html"><i class="fas fa-clipboard-list"></i> Đăng ký nhóm dịch</a>
+                                </li>-->
+      <li>
+        <a href="{% url 'dang-xuat' UserName.id %}"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+      </li>
+    </ul>
+  </div>
+  <div class="head_menu smp"><span>&nbsp;</span></div>
+</div>
+
+{% else %}
+<div class="top-buttons has-login">
+  <button class="login-btn" id="login_client">
+    Đăng nhập
+  </button>
+  <button class="register-btn" id="register_client">
+    Đăng ký
+  </button>
+</div>
+{% endif %}

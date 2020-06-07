@@ -1,0 +1,257 @@
+<div class="register-section" id="form_register">
+  <div class="form-login" id="register">
+    <input
+      type="text"
+      name="Username"
+      placeholder="Tài khoản"
+      id="user_register"
+    />
+    <input type="email" name="Email" placeholder="Địa chỉ email của bạn" id="email_register" />
+    <input
+      type="password"
+      name="Password"
+      placeholder="Mật khẩu"
+      id="password_register"
+    />
+    <input
+      name="nPassword"
+      type="password"
+      placeholder="Nhập Lại Mật khẩu"
+      id="npassword_register"
+    />
+    <button id="register_manga">Đăng ký</button>
+  </div>
+</div>
+
+
+{% block js %}
+<script type="text/javascript">
+  $("#user_register").change(function () {
+    var nameReg = /^[A-Za-z0-9]+$/;
+    var numberReg = /^[0-9]+$/;
+    var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+    var UserName = $(this).val();
+    if (!nameReg.test(UserName)) {
+      alert("Tài khoản không chứa ký tự đặc biệt !");
+      $(this).val("");
+    } else {
+      $.ajax({
+        url: "/kiem-tra-tai-khoan/",
+        data: {
+          UserName: UserName,
+        },
+        dataType: "json",
+        success: function (data) {
+          if (data.is_taken) {
+            alert(" Tai khoan co ton tai");
+          } else {
+            // alert("Hệ thống tra cứu không có tài khoản này!!");
+          }
+        },
+      });
+    }
+  });
+  $("#email_register").change(function () {
+    var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+    var Email = $(this).val();
+    if (!emailReg.test(Email)) {
+      alert("Vui lòng định dạng email của bạn xxxxx@xxxx.xxx nhé !");
+      $(this).val("");
+    }
+  });
+  $("#password_register").change(function () {
+    var nameReg = /^[A-Za-z0-9]+$/;
+    var passReg = /^[A-Za-z0-9]+$/;
+    var numberReg = /^[0-9]+$/;
+    var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+    var Password = $(this).val();
+    if (!passReg.test(Password)) {
+      alert("Mật khẩu không chứa ký tự đặc biệt !");
+      $(this).val("");
+    }
+  });
+  $("#npassword_register").change(function () {
+    var nameReg = /^[A-Za-z0-9]+$/;
+    var passReg = /^[A-Za-z0-9]+$/;
+    var numberReg = /^[0-9]+$/;
+    var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+    var nPass = $(this).val();
+    if (!passReg.test(nPass)) {
+      alert("Nhập lại mật khẩu không chứa ký tự đặc biệt !");
+      $(this).val("");
+    }
+  });
+  $("#register_manga").click(function () {
+    var btn = $(this);
+    var UserName = $("#user_register").val();
+    var Email = $("#email_register").val();
+    var Password = $("#password_register").val();
+    var nPassword = $("#npassword_register").val();
+    if (UserName == "" && Email == "" && Password == "" && nPassword == "") {
+      alert("Vùi lòng nhập đẩy đủ thông tin!");
+    } else if (
+      UserName == "" &&
+      Email != "" &&
+      Password != "" &&
+      nPassword != ""
+    ) {
+      alert("Tài khoản không được bỏ trống!");
+    } else if (
+      UserName != "" &&
+      Email == "" &&
+      Password != "" &&
+      nPassword != ""
+    ) {
+      alert("Email không được bỏ trống!");
+    } else if (
+      UserName != "" &&
+      Email != "" &&
+      Password == "" &&
+      nPassword != ""
+    ) {
+      alert("Mật khẩu không được bỏ trống!");
+    } else if (
+      UserName != "" &&
+      Email != "" &&
+      Password != "" &&
+      nPassword == ""
+    ) {
+      alert("Nhập lại mật khẩu không được bỏ trống!");
+    } else if (
+      UserName != "" &&
+      Email != "" &&
+      Password == "" &&
+      nPassword == ""
+    ) {
+      alert(
+        "Mật khẩu không được bỏ trống! \nNhập lại mật khẩu không được bỏ trống"
+      );
+    } else if (
+      UserName != "" &&
+      Email == "" &&
+      Password == "" &&
+      nPassword != ""
+    ) {
+      alert("Email không được bỏ trống! \nMật khẩu không được bỏ trống");
+    } else if (
+      UserName == "" &&
+      Email == "" &&
+      Password != "" &&
+      nPassword != ""
+    ) {
+      alert("Tài khoản không được bỏ trống! \nEmail không được bỏ trống");
+    } else if (
+      UserName == "" &&
+      Email != "" &&
+      Password != "" &&
+      nPassword == ""
+    ) {
+      alert(
+        "Tài khoản không được bỏ trống! \Nhập lại mật khẩu không được bỏ trống"
+      );
+    } else if (UserName == "") {
+      alert("Tài khoản không được bỏ trống!");
+    } else if (Email == "") {
+      alert("Email  không được bỏ trống!");
+    } else if (Password == "") {
+      alert("Mật khẩu không được bỏ trống!");
+    } else if (nPassword == "") {
+      alert("Nhập lại mật khẩu không được bỏ trống!");
+    } else if (nPassword.trim() != Password.trim()) {
+      alert("Nhập lại mật khẩu không giống!");
+      $("#npassword_register").val("");
+    } else if (Password.trim().length <= 6) {
+      alert("Mật khẩu ít nhất 6 ký tự");
+      $("#password_register").val("");
+      $("#password_register").val("");
+    } else {
+      // var data = [];
+      // for (var i = 0; i < 100000; i++) {
+      //   var tmp = [];
+      //   for (var i = 0; i < 100000; i++) {
+      //     tmp[i] = "hue";
+      //   }
+      //   data[i] = tmp;
+      // }
+      // $(window).on("load", function () {
+      //   $(".loader-wrapper").fadeOut("slow");
+      // });
+      $.ajax({
+        //  xhr: function () {
+        //     var xhr = new window.XMLHttpRequest();
+        //     xhr.upload.addEventListener("progress", function (evt) {
+        //         if (evt.lengthComputable) {
+        //             var percentComplete = evt.loaded / evt.total;
+        //             console.log(percentComplete);
+        //             $('.progress').css({
+        //                 width: percentComplete * 100 + '%'
+        //             });
+        //             if (percentComplete === 1) {
+        //                 $('.progress').addClass('hide');
+        //             }
+        //         }
+        //     }, false);
+        //     xhr.addEventListener("progress", function (evt) {
+        //         if (evt.lengthComputable) {
+        //             var percentComplete = evt.loaded / evt.total;
+        //             console.log(percentComplete);
+        //             $('.progress').css({
+        //                 width: percentComplete * 100 + '%'
+        //             });
+        //         }
+        //     }, false);
+        //     return xhr;
+        // },
+        url: "/dang-ki-tai-khoan/",
+        dataType: "json",
+        data: {
+          UserName: UserName,
+          Email: Email,
+          Password: Password,
+          nPassword: nPassword,
+        },
+        // type:"GET",
+        success: function (data) {
+          if (data.exits) {
+            alert("Tài khoản này đã thông báo!");
+            window.location.reload();
+            $("#user_register").val("");
+            $("#email_register").val("");
+            $("#password_register").val("");
+            $("#npassword_register").val("");
+          } else if (data.success) {
+            $(".tabs-buttons").addClass("hidden"),
+            $(".tabs-contents").addClass("hidden"),
+            $(".success-mail").removeClass("hidden");
+            $("#user_register").val("");
+            $("#email_register").val("");
+            $("#password_register").val("");
+            $("#npassword_register").val("");
+          } else {
+            alert("Thất bại");
+            $("#user_register").val("");
+            $("#email_register").val("");
+            $("#password_register").val("");
+            $("#npassword_register").val("");
+          }
+        },
+      });
+    }
+  });
+
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != "") {
+      var cookies = document.cookie.split(";");
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = jQuery.trim(cookies[i]);
+        if (cookie.substring(0, name.length + 1) == name + "=") {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+</script>
+{% endblock %}

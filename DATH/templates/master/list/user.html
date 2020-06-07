@@ -1,0 +1,29 @@
+{% for c in data %}
+<tr>
+  <td class="center">
+    <label class="pos-rel">
+      <input type="checkbox" class="ace" />
+      <span class="lbl"></span>
+    </label>
+  </td>
+  <td>
+    <a href="#">{{c.UserName}}</a>
+  </td>
+  <td>{{c.NickName}}</td>
+  <td>{{c.Email}}</td>
+  <td>{{c.Birthday|date:'d/m/Y'}}</td>
+  <td>{{c.Phone}}</td>
+  <td>{{c.Address}}</td>
+  <td>{{c.Content}}</td>
+  <td>{{c.LevelUser}}</td>
+  <td>{{c.Coins}} <i class="fa fa-bitcoin"></i></td>
+  <td>
+    {% if c.Image %}
+    <img src="{{c.Image.url}}" width="75px" height="75px" alt="" />
+    {% else %} Đang Cập Nhập {% endif %}
+  </td>
+  <td>
+    {% include "master/href/bodyuser.html" %}
+  </td>
+</tr>
+{% endfor %}

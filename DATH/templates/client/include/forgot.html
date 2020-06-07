@@ -1,0 +1,88 @@
+<div class="modal notify-modal" id="notify">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <span class="top-caption">
+      Quên mật khẩu hử !<br />
+      Đã có QQ lo
+    </span>
+    <!-- /.top-caption -->
+    <div class="forget-password-section">
+      <span class="caption"
+        >Mật khẩu khôi phục sẽ được gởi qua email mà bạn đăng ký</span
+      >
+      <div class="form-forgot">
+        <input type="email" placeholder="Email" id="email-forgot" />
+        <button type="button" id="button-forgot">Gửi mật khẩu</button>
+      </div>
+    </div>
+    <!-- /.forget-password-section -->
+    <div class="sent-password-section">
+      <span class="check-icon"></span>
+      <span class="caption"
+        >Mật khẩu khôi phục đã được gởi bạn hãy kiểm tra trong hộp thư</span
+      >
+    </div>
+    <!-- /.sent-password-section -->
+    <a href="/" class="back-to-login">Tôi muốn quay lại đăng nhập</a>
+    <!-- /.back-to-login -->
+  </div>
+</div>
+
+{% block js %}
+<script type="text/javascript">
+  $("#button-forgot").click(function () {
+    var Email = $("#email-forgot").val();
+    if(Email == "")
+    {
+      alert("Vùi lòng điền địa chỉ email đăng ký tài khoản của bạn.");
+    }
+    else{
+      $.ajax({
+        url:"{% url 'gmail-mk' %}",
+        dataType:'json',
+        data:{
+          Email: Email,
+        },
+        success:function(data){
+          if(data.success)
+          {
+            $("#email-forgot").val("");
+            $(".forget-password-section").addClass("hidden"),
+            $(".sent-password-section").removeClass("hidden");
+           
+          }
+          else{
+            alert("Gửi thất bại");
+            $("#email-forgot").val("");
+          }
+        }
+      });
+    
+    }
+  });
+  $("#email-forgot").change(function(){
+    var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+     var Email = $(this).val();
+    if (!emailReg.test(Email)) {
+      alert("Vui lòng định dạng email của bạn xxxxx@xxxx.xxx nhé !");
+      $(this).val("");
+    } else {
+      $.ajax({
+        url: "{% url 'kiem-tra-email' %}",
+        data: {
+          Email: Email,
+        },
+        dataType: "json",
+        success: function (data) {
+          if (data.is_taken) {
+            // alert(" Tai khoan co ton tai");
+          } else {
+            alert("Hệ thống tra cứu không có email này!!");
+            $(this).val("");
+          }
+        },
+      });
+    }
+  })
+</script>
+{% endblock js %}

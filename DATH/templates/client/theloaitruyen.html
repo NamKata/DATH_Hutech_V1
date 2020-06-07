@@ -1,0 +1,182 @@
+{% extends "client/index.html" %} {% load static %} {% block content %}
+<section class="main-content">
+  <div class="container story-list">
+    <div class="title-list">Thể loại truyện {{checkcate.CategoryName}}</div>
+    <div class="box">
+        {{checkcate.CategoryContent|safe|linebreaks}}
+    </div>
+    <div class="story-list-bl01 box">
+      <table>
+        <!-- <tr>
+          <th>Tình trạng</th>
+          <td>
+            <ul class="choose">
+              <li>
+                <a class="" href="#">Đang tiến hành</a>
+              </li>
+              <li>
+                <a class="" href="#">Hoàn thành</a>
+              </li>
+            </ul>
+          </td>
+        </tr> -->
+        <tr>
+          <th>Thể loại truyện</th>
+          <td>
+            <div class="select is-warning">
+              <select id="category">
+                {% for cate in  theloai %}
+                  {% if cate.pk == checkcate.pk %}
+                       <option selected value="{% url 'the-loai-truyen' cate.pk %}"
+                  >{{cate.CategoryName}}</option
+                >
+                {% else %}
+                 <option value="{% url 'the-loai-truyen' cate.pk %}"
+                  >{{cate.CategoryName}}</option
+                >
+                  {% endif %}
+                {% endfor %}
+                
+              </select>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="tile is-ancestor">
+      <div class="tile is-vertical is-parent">
+        <ul class="list-stories grid-6">
+          {% for manga in manga %}
+          <li>
+            <div class="story-item">
+              {% if manga.Manga.MangaType.pk == 1 %}
+                  <a href="{% url 'truyen-tranh' manga.Manga.Slug %}">
+                    {% if manga.Manga.Image %}
+                    <img
+                      class="story-cover"
+                      src="{{ manga.Manga.Image.url }}"
+                      alt="{{manga.Manga.MangaName}}"
+                    />
+                    {% endif %}
+                  </a>
+                {% else %}
+                    <a href="{% url 'truyen-chu' manga.Manga.Slug %}">
+                    {% if manga.Manga.Image %}
+                    <img
+                      class="story-cover"
+                      src="{{ manga.Manga.Image.url }}"
+                      alt="{{manga.Manga.MangaName}}"
+                      />
+                    {% endif %}
+                    </a>
+                {% endif %}
+              <div class="top-notice">
+                  {% if manga.Manga.Chapnow == 0 %}
+                  <span class="time-ago">Đang cập nhập</span>
+                  {% else %}
+                  <span class="time-ago"
+                    >{{manga.Manga.DateUpChap|timesince}}</span
+                  >
+                  {% endif %}
+                <span class="type-label hot">Hot</span>
+              </div>
+              <h3 class="title-book">
+                {% if manga.Manga.MangaType.pk == 1 %}
+                  <a href="{% url 'truyen-tranh' manga.Manga.Slug %}">{{ manga.Manga.MangaName}}</a>
+                {% else %}
+                  <a href="{% url 'truyen-chu' manga.Manga.Slug %}">{{ manga.Manga.MangaName}}</a>
+                {% endif %}
+              </h3>
+              <div class="episode-book">
+               {% if manga.Manga.Chapnow == 0 %}
+                  <a href="#"> Đang Cập Nhập </a>
+                  {% else %} {% if manga.Manga.MangaType.pk == 1 %}
+                  <a
+                    href="{% url 'truyen-tranh-chap' manga.Manga.Slug manga.Manga.Chapnow %}"
+                  >
+                    Chương {{manga.Manga.Chapnow}}
+                  </a>
+                  {% else %}
+                  <a
+                    href="{% url 'truyen-chu-chap' manga.Manga.Slug manga.Manga.Chapnow %}"
+                  >
+                    Chương {{manga.Manga.Chapnow}}
+                  </a>
+                  {% endif %} {% endif %}
+              </div>
+              <div class="more-info">
+                <div class="title-more">
+                  {{manga.Manga.MangaName}}
+                </div>
+                <div class="title-more-other">
+                  Tên khác: {{manga.Manga.OrtherName}}
+                </div>
+                <p class="info">Tình trạng: Đang Cập Nhật</p>
+                <p class="info">Lượt xem: 55,789</p>
+                <p class="info">Lượt theo dõi: 750</p>
+                <div class="list-tags">
+                  {% for cate in category %} {% if cate.Manga.id == manga.Manga.id %}
+                  <a class="blue" href="#">{{cate.Category.CategoryName}}</a>
+                  {% endif %} {% endfor %}
+                </div>
+                <div class="excerpt">
+                  {% if manga.Manga.Content|length > 150 %}
+                  {{manga.Manga.Content|slice:"0:185"|safe|linebreaks}}... {% else %}
+                  {{manga.Manga.Content|safe|linebreaks}} {% endif %}
+                </div>
+              </div>
+            </div>
+            <!-- /.story-item -->
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <!-- /.list-stories -->
+
+    {% if manga.Manga.has_other_pages %}
+    <nav
+      class="pagination is-centered is-rounded"
+      role="navigation"
+      aria-label="pagination"
+    >
+      <ul class="pagination-list">
+        {% if manga.Manga.has_previous %}
+        <li>
+          <a
+            class="pagination-previous"
+            href="?page={{manga.Manga.previous_page_number }}"
+            ><span aria-hidden="true">&laquo;</span></a
+          >
+        </li>
+        <li>
+          <a class="pagination-link" href="?page={{manga.Manga.previous_page_number }}"
+            ><span aria-hidden="true">&lsaquo;</span></a
+          >
+        </li>
+        {% endif %} {% for i in manga.Manga.paginator.page_range %} {% if manga.Manga.number == i %}
+        <li>
+          <a class="pagination-link is-current" href="?page={{i}}">{{i}}</a>
+        </li>
+        {% else %}
+        <li>
+          <a class="pagination-link" href="?page={{i}}">{{i}}</a>
+        </li>
+        {% endif %} {% endfor %} {% if manga.Manga.has_next %}
+        <li>
+          <a class="pagination-link" href="?page={{ manga.Manga.next_page_number}}"
+            ><span aria-hidden="true">&rsaquo;</span></a
+          >
+        </li>
+        <li>
+          <a class="pagination-next" href="?page={{ manga.Manga.next_page_number }}"
+            ><span aria-hidden="true">&raquo;</span></a
+          >
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

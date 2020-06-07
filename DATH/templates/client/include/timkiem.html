@@ -1,0 +1,70 @@
+{% load static %}{% load widget_tweaks %}
+{% if statuss %}
+<div class="list-container">
+  {% for item in  statuss %}
+    <div class="result-item">
+    {% if item.MangaType.pk == 1 %}
+    <a href="{% url 'truyen-tranh' item.Slug %}">
+      <div class="media">
+        <figure class="media-left">
+          <p class="image">
+          {% if item.Image %}
+             <img
+              src="{{item.Image.url}}"
+              alt="Đảo Hải Tặc"
+            />
+          {% else %}
+             <img
+              src="{% static 'client/assets/images/dao-hai-tac.jpg' %}"
+              alt="Đảo Hải Tặc"
+            />
+          {% endif %}
+           
+          </p>
+        </figure>
+
+        <div class="media-content">
+          <h3>{{item.MangaName}}</h3>
+          <h6>Chương {{item.Chapnow}}</h6>
+        </div>
+      </div>
+    </a>
+    {% else %}
+     <a href="{% url 'truyen-chu' item.Slug %}">
+      <div class="media">
+        <figure class="media-left">
+          <p class="image">
+          {% if item.Image %}
+             <img
+              src="{{item.Image.url}}"
+              alt="Đảo Hải Tặc"
+            />
+          {% else %}
+             <img
+              src="{% static 'client/assets/images/dao-hai-tac.jpg' %}"
+              alt="Đảo Hải Tặc"
+            />
+          {% endif %}
+           
+          </p>
+        </figure>
+
+        <div class="media-content">
+          <h3>{{item.MangaName}}</h3>
+          <h6>Chương {{item.Chapnow}}</h6>
+        </div>
+      </div>
+    </a>
+    {% endif %}
+   
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="list-container">
+<div class="result-item">
+  Không tìm thấy
+</div>
+ </div>
+{% endif %}
+

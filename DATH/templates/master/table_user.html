@@ -1,5 +1,8 @@
-{% extends "master/index.html" %} {% load static %} {% block content %}
-<div class="main-content">
+{% extends "master/index.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="main-content">
   <div class="main-content-inner">
     <div class="breadcrumbs ace-save-state" id="breadcrumbs">
       <ul class="breadcrumb" style="font-family: Arial, Helvetica, sans-serif;">
@@ -32,10 +35,7 @@
     </div>
 
     <div class="page-content">
-      <div
-        class="page-header"
-        style="font-family: Arial, Helvetica, sans-serif;"
-      >
+      <div class="page-header" style="font-family: Arial, Helvetica, sans-serif;">
         <h1>
           Bảng
           <small>
@@ -47,9 +47,18 @@
       <!-- /.page-header -->
 
       <div class="row">
+      
         <div class="col-xs-12">
+                 <button
+            id="add_new"
+            data-url="{% url 'adduser' %}"
+            class="btn btn-primary"
+          >
+            Thêm Mới
+          </button>
           <!-- PAGE CONTENT BEGINS -->
           <div class="row">
+          
             <div class="col-xs-12">
               <div class="clearfix">
                 <div class="pull-right tableTools-container"></div>
@@ -67,8 +76,7 @@
               <div>
                 <table
                   id="dynamic-table"
-                  class="table table-striped table-bordered table-hover"
-                  style="font-family: Arial, Helvetica, sans-serif;"
+                  class="table table-striped table-bordered table-hover" style="font-family: Arial, Helvetica, sans-serif;"
                 >
                   <thead>
                     <tr>
@@ -95,54 +103,7 @@
                   </thead>
 
                   <tbody>
-                    {% for c in data %}
-                    <tr>
-                      <td class="center">
-                        <label class="pos-rel">
-                          <input type="checkbox" class="ace" />
-                          <span class="lbl"></span>
-                        </label>
-                      </td>
-                      <td>
-                        <a href="#">{{c.UserName}}</a>
-                      </td>
-                      <td>{{c.NickName}}</td>
-                      <td>{{c.Email}}</td>
-                      <td>{{c.Birthday|date:'d/m/Y'}}</td>
-                      <td>{{c.Phone}}</td>
-                      <td>{{c.Address}}</td>
-                      <td>{{c.Content}}</td>
-                      <td>{{c.LevelUser}}</td>
-                      <td>{{c.Coins}} <i class="fa fa-bitcoin"></i></td>
-                      <td>
-                        {% if c.Image %}
-                        <img
-                          src="{{c.Image.url}}"
-                          width="75px"
-                          height="75px"
-                          alt=""
-                        />
-                        {% else %} Đang Cập Nhập {% endif %}
-                      </td>
-                      <td>
-                        <div class="hidden-sm hidden-xs action-buttons">
-                          <a class="blue" href="#">
-                            <i
-                              class="ace-icon fa fa-search-plus bigger-130"
-                            ></i>
-                          </a>
-
-                          <a class="green" href="#">
-                            <i class="ace-icon fa fa-pencil bigger-130"></i>
-                          </a>
-
-                          <a class="red" href="#">
-                            <i class="ace-icon fa fa-trash-o bigger-130"></i>
-                          </a>
-                        </div>
-                      </td>
-                    </tr>
-                    {% endfor %}
+                  {% include "master/list/user.html" %}
                   </tbody>
                 </table>
               </div>
@@ -159,4 +120,61 @@
   </div>
 </div>
 <!-- /.main-content -->
+<div class="modal fade" id="get_modal">
+  <div class="modal-dialog">
+    <div class="modal-content"></div>
+  </div>
+</div>
 {% endblock %}
+{% block js %}
+  <script type="text/javascript">
+  var loadForm = function () {
+    var btn = $(this);
+    $.ajax({
+      url: btn.attr("data-url"),
+      type: "get",
+      dataType: "json",
+      beforeSend: function () {
+        $("#get_modal").modal("show");
+      },
+      success: function (data) {
+        if(data.trangchu)
+        {
+            $("#get_modal").modal("hide");
+        }else
+        {
+          $("#get_modal .modal-content").html(data.modal_form);
+        }
+        
+      },
+    });
+  };
+
+  var saveForm = function () {
+    var form = $(this);
+    $.ajax({
+      url: form.attr("action"),
+      data: form.serialize(),
+      type: form.attr("method"),
+      dataType: "json",
+      success: function (data) {
+        if (data.request) {
+          $("#dynamic-table tbody").html(data.list);
+          $("#get_modal").modal("hide");
+          window.location.reload();
+        } else {
+          $("#get_modal .modal-content").html(data.modal_form);
+        }
+      },
+    });
+    return false;
+  };
+  $("#add_new").click(loadForm);
+  $("#get_modal").on("submit", "#form_add_submit", saveForm);
+  $("#dynamic-table").on("click", "#update_edit", loadForm);
+  $("#get_modal").on("submit", "#edit_form_submit", saveForm);
+  $("#dynamic-table").on("click", "#delete_trash", loadForm);
+  $("#get_modal").on("submit", "#delete_form_submit", saveForm);
+</script>
+{% endblock  %}
+    

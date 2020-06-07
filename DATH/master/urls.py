@@ -1,5 +1,6 @@
 from django.urls import path, include
 from . import views
+from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('', views.home_master, name='master'),
     path('table/user-group/', views.table_user_group, name='tblusergroup'),
@@ -15,4 +16,28 @@ urlpatterns = [
     path('table/user/', views.table_user, name='tbluser'),
     path('table/manga/', views.table_manga, name='tblmanga'),
     path('table/chap/', views.table_chap, name='tblchap'),
+    path('table/manga/add', views.table_manga_add, name='addmanga'),
+    path('table/chap/add', views.chap_create, name='addchap'),
+    path('table/user-group/add', views.table_group_add, name='addgroup'),
+    path('table/user-group/edit/<int:pk>/', views.table_group_edit, name='editgroup'),
+    path('table/user-group/delete/<int:pk>/', views.table_group_delete, name='deletegroup'),
+    path('table/level-user/add', views.table_level_add, name='addlevel'),
+    path('table/level-user/edit/<int:pk>/', views.table_level_edit, name='editlevel'),
+    path('table/level-user/delete/<int:pk>/', views.table_level_delete, name='deletelevel'),
+    path('table/formality/add', views.table_formality_add, name='addformality'),
+    path('table/formality/edit/<int:pk>/', views.table_formality_edit, name='editformality'),
+    path('table/formality/delete/<int:pk>/', views.table_formality_delete, name='deleteformality'),
+    path('table/user/add', views.table_user_add, name='adduser'),
+    path('table/user/edit/<int:pk>/', views.table_user_edit, name='edituser'),
+    path('table/user/delete/<int:pk>/', views.table_user_delete, name='deleteuser'),
+    path('table/manga-type/add', views.table_type_add, name='addmangatype'),
+    path('table/manga-type/edit/<int:pk>/', views.table_type_edit, name='editmangatype'),
+    path('table/manga-type/delete/<int:pk>/', views.table_type_delete, name='deletemangatype'),
+    path('table/category/add', views.table_cate_add, name='addcategory'),
+    path('table/category/edit/<int:pk>/', views.table_cate_edit, name='editcategory'),
+    path('table/category/delete/<int:pk>/', views.table_cate_delete, name='deletecategory'),
+    path('table/manga-category/add', views.table_mancate_add, name='addmangacategory'),
+    path('table/manga-category/edit/<int:pk>/', views.table_mancate_edit, name='editmangacategory'),
+    path('table/manga-category/delete/<int:pk>/', views.table_mancate_delete, name='deletemangacategory'),
+    # path('dang-nhap-he-thong', views.login_master, name='dang-nhap-he-thong')
 ]

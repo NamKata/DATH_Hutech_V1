@@ -2,46 +2,95 @@
 
 <section class="main-content">
   <div class="container">
+    {% if success %}
+    <div class="alert alert-danger">Thành công</div>
+    {% endif %}
+    {% if errorpass %}
+       <div class="alert alert-warning">Mật khẩu không giống! Vùi lòng kiểm tra lại!</div>
+    {% endif %}
     <div class="messages columns">
       <div class="column is-narrow left pc">
         <ul class="nav-user">
+           <li>
+            <a class="li01 is-active" href="{% url 'info' user.id %}"
+              >Quản lý tài khoản</a
+            >
+          </li>
           <li>
-            <a class="li01 is-active" href="{% url 'info' %}">Quản lý tài khoản</a>
+            <a class="li" href="{% url 'dang-ky-truyen' %}">Đăng ký truyện</a>
           </li>
           <li><a class="li02" href="#">Tin nhắn</a></li>
-          <li><a class="li03" href="#">Đổi mật khẩu</a></li>
+          <li><a class="li03 " href="{% url 'doi-mat-khau' user.id %}">Đổi mật khẩu</a></li>
           <!--<li><a class="li04 regiter-team"href="group.html">Đăng ký nhóm dịch</a></li>
                 <li><a class="li05 collection" href="collection.html">Quyên góp</a></li>-->
         </ul>
       </div>
-      <div class="column columns">
-        <div class="user-right column">
-          <div class="img">
-            <img
-              class="image-avatar"
-              src="http://truyenqq.com/template/frontend/images/info-user-img01.png"
-              alt=""
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="column columns">
+          <div class="user-right column">
+            <div class="img">
+              {% if user.Image == '' %}
+              <img
+                id="ImageManga"
+                class="image-avatar"
+                src="{% static 'client/assets/images/noavatar.png' %}"
+                name="Image"
+                width="75px"
+                height="75px"
+              />
+              {% else %}
+              <img
+                id="ImageManga"
+                width="75px"
+                name="Image"
+                height="75px"
+                class="image-avatar"
+                src="{{user.Image.url}}"
+              />
+              {% endif %}
+            </div>
+            <input
+              type="file"
+              multiple="false"
+              name="Image"
+              id="uploadavatar"
+              style="display: none;"
+              onchange="img_pathUrl(this)"
             />
+            <button class="button is-danger btn-avatar" id="clickFile" type="button">
+              Chọn Hình
+            </button>
           </div>
-          <input
-            type="file"
-            multiple="false"
-            name="files[]"
-            id="uploadavatar"
-            style="display: none;"
-          />
-          <button class="button is-danger btn-avatar">Chọn hình</button>
-        </div>
-        <div class="user-main column">
-          <div class="level title">
-            <p class="level-left has-text-weight-bold">Thông tin tài khoản</p>
-          </div>
-          <form method="post">
+
+          <div class="user-main column">
+            <div class="level title">
+              <p class="level-left has-text-weight-bold">Thông tin tài khoản</p>
+            </div>
             <div class="form-change-pass">
               <div class="field">
                 <p class="txt">UID:</p>
                 <p class="control">
-                  <input class="input" type="text" value="69003" disabled />
+                  <input
+                    name="Id"
+                    class="input"
+                    type="text"
+                    value="{{user.id}}"
+                    disabled
+                  />
+                </p>
+              </div>
+              <div class="field">
+                <p class="txt">Tài Khoản</p>
+                <p class="control">
+                  <input
+                    class="input"
+                    type="text"
+                    id="UserName"
+                    name="UserName"
+                    value="{{user.UserName}}"
+                    disabled
+                  />
                 </p>
               </div>
               <div class="field">
@@ -50,34 +99,26 @@
                   <input
                     class="input"
                     type="email"
-                    value="tiennam111298@gmail.com"
+                    name="Email"
+                    value="{{user.Email}}"
                     disabled
                   />
                 </p>
               </div>
             </div>
+            <div class="level title user-title">
+              <p class="level-left has-text-weight-bold">Thông tin cá nhân</p>
+            </div>
             <div class="form-change-pass user-form">
               <div class="field">
-                <p class="txt">Họ</p>
+                <p class="txt">Tên Người Dùng</p>
                 <p class="control">
                   <input
                     class="input"
                     type="text"
-                    id="last_name"
-                    name="last_name"
-                    value="Kata"
-                  />
-                </p>
-              </div>
-              <div class="field">
-                <p class="txt">Tên</p>
-                <p class="control">
-                  <input
-                    class="input"
-                    type="text"
-                    id="first_name"
-                    name="first_name"
-                    value="Nam"
+                    id="NickName"
+                    name="NickName"
+                    value="{{user.NickName}}"
                   />
                 </p>
               </div>
@@ -87,9 +128,9 @@
                   <input
                     class="input"
                     type="date"
-                    id="birthday"
-                    name="birthday"
-                    value=""
+                    id="Birthday"
+                    name="Birthday"
+                    value="{{user.Birthday|date:'Y-m-d'}}"
                   />
                 </p>
               </div>
@@ -98,15 +139,28 @@
                 <p class="control">
                   <input
                     class="input"
-                    id="phone"
-                    name="phone"
+                    id="Phone"
+                    name="Phone"
                     type="number"
-                    value=""
+                    value="{{user.Phone}}"
+                  />
+                </p>
+              </div>
+              <div class="field">
+                <p class="txt">Địa chỉ</p>
+                <p class="control">
+                  <input
+                    class="input"
+                    id="Address"
+                    name="Address"
+                    type="text"
+                    value="{{user.Address}}"
                   />
                 </p>
               </div>
               <div class="field user-field">
                 <span class="txt">Giới tính</span>
+                {% if user.StatusGender == True %}
                 <input
                   type="radio"
                   id="gender1"
@@ -117,6 +171,24 @@
                 <label for="gender1">Nam</label>
                 <input type="radio" id="gender2" name="gender" value="0" />
                 <label for="gender2">Nữ</label>
+                {% else %}
+                <input type="radio" id="gender1" name="gender" value="1" />
+                <label for="gender1">Nam</label>
+                <input
+                  type="radio"
+                  id="gender2"
+                  name="gender"
+                  value="0"
+                  checked
+                />
+                <label for="gender2">Nữ</label>
+                {% endif %}
+              </div>
+              <div class="field">
+                <p class="txt">Giới thiệu:</p>
+                <p class="control">
+                  <textarea name="Content">{{user.Content|safe|linebreaks}}</textarea>
+                </p>
               </div>
               <div class="field">
                 <p class="txt">Mật khẩu hiện tại:</p>
@@ -124,30 +196,88 @@
                   <input
                     class="input"
                     id="password_old"
-                    name="password_old"
+                    name="Password"
                     type="password"
                     value=""
                   />
                 </p>
               </div>
-              <input type="hidden" id="avatar" name="avatar" value="" />
-              <input
-                type="hidden"
-                id="inputDelImage"
-                name="inputDelImage"
-                value=""
-              />
               <div class="field">
                 <p class="control">
                   <button class="button is-danger" type="submit">Lưu</button>
                 </p>
               </div>
             </div>
-          </form>
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </section>
 
-{% endblock %}
+{% endblock %} {% block js %}
+<script type="text/javascript">
+  $("#clickFile").click(function () {
+    $("#uploadavatar").click();
+  });
+  function img_pathUrl(input) {
+    // $('#ImageManga')[0].src = (window.URL ? URL : webkitURL).createObjectURL(input.files[0]);
+    $("#ImageManga")[0].src = URL.createObjectURL(event.target.files[0]);
+  }
+</script>
+ <script type="text/javascript">
+      tinymce.init({
+        selector: "textarea",
+        plugins: "emoticons hr image link lists charmap table",
+        toolbar: "formatgroup paragraphgroup insertgroup",
+        toolbar_groups: {
+          formatgroup: {
+            icon: "format",
+            tooltip: "Formatting",
+            items:
+              "bold italic underline strikethrough | forecolor backcolor | superscript subscript | removeformat",
+          },
+          paragraphgroup: {
+            icon: "paragraph",
+            tooltip: "Paragraph format",
+            items:
+              "h1 h2 h3 | bullist numlist | alignleft aligncenter alignright | indent outdent",
+          },
+          insertgroup: {
+            icon: "plus",
+            tooltip: "Insert",
+            items: "link image emoticons charmap hr",
+          },
+        },
+        skin: "outside",
+        toolbar_location: "bottom",
+        menubar: false,
+        height: 350,
+        with: 500,
+        file_picker_types: "image",
+        file_picker_callback: function (cb, value, meta) {
+          var input = document.createElement("input");
+          input.setAttribute("type", "file");
+          input.setAttribute("accept", "image/*");
+
+          input.onchange = function () {
+            var file = this.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function () {
+              var id = "blobid" + new Date().getTime();
+              var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+              var base64 = reader.result.split(",")[1];
+              var blobInfo = blobCache.create(id, file, base64);
+              blobCache.add(blobInfo);
+
+              // call the callback and populate the Title field with the file name
+              cb(blobInfo.blobUri(), { title: file.name });
+            };
+            reader.readAsDataURL(file);
+          };
+          input.click();
+        },
+      });
+    </script>
+{% endblock js %}

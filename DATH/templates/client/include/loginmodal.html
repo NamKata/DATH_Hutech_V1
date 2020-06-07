@@ -1,0 +1,53 @@
+<div class="modal login-modal" id="login-modal">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <span class="top-caption">
+      Vui cười thả ga<br />
+      ở website truyện tranh này!
+    </span>
+    <div>
+      <!-- /.top-caption -->
+      <div class="tabs-buttons">
+        <button
+          data-type="login"
+          id="login_type_client"
+          data-url="{% url 'dang-nhap'%}"
+        >
+          Đăng nhập
+        </button>
+        <button data-type="register" id="register_type_client">
+          Đăng ký
+        </button>
+      </div>
+      <!-- /.tabs-button -->
+      <div class="tabs-contents">
+        {% include "client/include/login.html" %}
+        <!-- /.login-section -->
+        {% include "client/include/register.html" %}
+      </div>
+      <!-- /.register-section -->
+    </div>
+    <!-- /.tabs-contents -->
+    <div class="success-mail hidden">
+      <span class="check-icon"></span>
+      <span class="caption"
+        >Email kích hoạt đã được gởi, bạn hãy kiểm tra trong hộp thư</span
+      >
+      <!-- /.sent-password-section -->
+      <a href="/"  id="getbacktologin">Tôi muốn quay lại đăng nhập</a>
+    </div>
+  </div>
+</div>
+
+{% block js %}
+<script type="text/javascript">
+$("#getbacktologin").click(function(){
+  $(".success-mail").addClass("hidden"),
+  $(".tabs-buttons").removeClass("hidden"),
+  $(".tabs-contents").removeClass("hidden");
+  // $(".login-section").addClass("is-active");
+})
+</script>
+  
+{% endblock js %}
+  

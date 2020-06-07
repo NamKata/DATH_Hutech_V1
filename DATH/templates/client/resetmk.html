@@ -1,0 +1,85 @@
+{% extends "client/index.html" %} {% block content %}
+<section class="main-content">
+  <div class="container">
+    <div class="title-list">Tạo mới mật khẩu</div>
+    <div class="messages">
+      {% if Eror %}
+        <div class="alert alert-warning">
+          Mật khẩu không giống nhau
+        </div>
+      {% endif %}
+      <div class="column">
+        <div class="level title">
+          <p class="level-left has-text-weight-bold">Tạo mới mật khẩu</p>
+        </div>
+        <form method="POST">
+        {% csrf_token %}
+         <div class="form-change-pass">
+            <div class="field">
+              <p class="txt">Mật khẩu mới</p>
+              <p class="control">
+                <input
+                  class="input"
+                  type="password"
+                  value=""
+                  name="password_new"
+                  id="password_new"
+                />
+              </p>
+            </div>
+            <div class="field">
+              <p class="txt">Xác nhận mật khẩu</p>
+              <p class="control">
+                <input
+                  class="input"
+                  type="password"
+                  value=""
+                  name="confirm_password_new"
+                  id="confirm_password_new"
+                />
+              </p>
+            </div>
+            <div class="field">
+              <p class="control">
+                <button class="button is-danger" type="submit">
+                 Xác nhận
+                </button>
+              </p>
+            </div>
+          </div>
+        </form>
+       
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %} {% block js %}
+<script type="text/javascript">
+  $("#password_new").change(function () {
+    var passReg = /^[A-Za-z0-9]+$/;
+    var Password = $(this).val();
+    if (!passReg.test(Password)) {
+      alert("Mật khẩu không chứa ký tự đặc biệt !");
+      $(this).val("");
+    } else if (Password.trim().length <= 6) {
+      alert("Mật khẩu ít nhất 6 ký tự");
+      $(this).val("");
+    } else if (Password == "") {
+      alert("Mật khẩu không được bỏ trống!");
+    }
+  });
+  $("#confirm_password_new").change(function () {
+    var passReg = /^[A-Za-z0-9]+$/;
+    var Password = $(this).val();
+    if (!passReg.test(Password)) {
+      alert("Mật khẩu không chứa ký tự đặc biệt !");
+      $(this).val("");
+    } else if (Password.trim().length <= 6) {
+      alert("Mật khẩu ít nhất 6 ký tự");
+      $(this).val("");
+    } else if (Password == "") {
+      alert("Mật khẩu không được bỏ trống!");
+    }
+  });
+</script>
+{% endblock js %}

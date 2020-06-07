@@ -48,6 +48,13 @@
 
       <div class="row">
         <div class="col-xs-12">
+          <button
+            id="add_new"
+            data-url="{% url 'addformality' %}"
+            class="btn btn-primary"
+          >
+            Thêm kiểu sáng tác
+          </button>
           <!-- PAGE CONTENT BEGINS -->
           <div class="row">
             <div class="col-xs-12">
@@ -82,44 +89,12 @@
                       <th>
                         Nội dung
                       </th>
-                      <!-- <th class="hidden-480">Status</th> -->
-
                       <th></th>
                     </tr>
                   </thead>
 
                   <tbody>
-                    {% for c in data %}
-                    <tr>
-                      <td class="center">
-                        <label class="pos-rel">
-                          <input type="checkbox" class="ace" />
-                          <span class="lbl"></span>
-                        </label>
-                      </td>
-                      <td>
-                        <a href="#">{{c.Name}}</a>
-                      </td>
-                      <td>{{c.Content}}</td>
-                      <td>
-                        <div class="hidden-sm hidden-xs action-buttons">
-                          <a class="blue" href="#">
-                            <i
-                              class="ace-icon fa fa-search-plus bigger-130"
-                            ></i>
-                          </a>
-
-                          <a class="green" href="#">
-                            <i class="ace-icon fa fa-pencil bigger-130"></i>
-                          </a>
-
-                          <a class="red" href="#">
-                            <i class="ace-icon fa fa-trash-o bigger-130"></i>
-                          </a>
-                        </div>
-                      </td>
-                    </tr>
-                    {% endfor %}
+                    {% include "master/list/formality.html" %}
                   </tbody>
                 </table>
               </div>
@@ -136,4 +111,60 @@
   </div>
 </div>
 <!-- /.main-content -->
+<div class="modal fade" id="get_modal">
+  <div class="modal-dialog">
+    <div class="modal-content"></div>
+  </div>
+</div>
+{% endblock %}
+{% block js %}
+  <script type="text/javascript">
+  var loadForm = function () {
+    var btn = $(this);
+    $.ajax({
+      url: btn.attr("data-url"),
+      type: "get",
+      dataType: "json",
+      beforeSend: function () {
+        $("#get_modal").modal("show");
+      },
+      success: function (data) {
+        if(data.trangchu)
+        {
+            $("#get_modal").modal("hide");
+        }else
+        {
+          $("#get_modal .modal-content").html(data.modal_form);
+        }
+        
+      },
+    });
+  };
+
+  var saveForm = function () {
+    var form = $(this);
+    $.ajax({
+      url: form.attr("action"),
+      data: form.serialize(),
+      type: form.attr("method"),
+      dataType: "json",
+      success: function (data) {
+        if (data.request) {
+          $("#dynamic-table tbody").html(data.list);
+          $("#get_modal").modal("hide");
+          window.location.reload();
+        } else {
+          $("#get_modal .modal-content").html(data.modal_form);
+        }
+      },
+    });
+    return false;
+  };
+  $("#add_new").click(loadForm);
+  $("#get_modal").on("submit", "#form_add_submit", saveForm);
+  $("#dynamic-table").on("click", "#update_edit", loadForm);
+  $("#get_modal").on("submit", "#edit_form_submit", saveForm);
+  $("#dynamic-table").on("click", "#delete_trash", loadForm);
+  $("#get_modal").on("submit", "#delete_form_submit", saveForm);
+</script>
 {% endblock %}
